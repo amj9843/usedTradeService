@@ -1,6 +1,8 @@
 # 🗒 중고 거래 서비스
 중고 거래의 위탁을 맡아주는 기업들이 있다는 가정 하에 진행되는 중고 거래 서비스입니다.
+
 <br>
+
 ## 프로젝트 기능 및 설계
 - ### 관리자 도메인 관리
     - 관리자 도메인 등록
@@ -267,9 +269,12 @@
         - 필요 입력정보: 이미지 식별번호
         - S3의 식별번호에 해당하는 이미지가 삭제된다.
         - DB에서 이미지 정보가 삭제된다.
+
 <br>
+
 ## 추가 기능
 위 기능들을 모두 개발한 후 시간이 된다면 차례대로 구현할 기능들입니다.
+
 - ### 회원 관리
     - 관련 기술: <img src="https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=json&logoColor=white">, <img src="https://img.shields.io/badge/Redis-FF4438?style=for-the-badge&logo=redis&logoColor=white">
     - JWT 토큰을 이용, redis에 블랙리스트를 추가하는 방식으로 로그아웃  구현
@@ -279,12 +284,18 @@
     - 관련 기술: <img src="https://img.shields.io/badge/Elastic Search-005571?style=for-the-badge&logo=elasticsearch&logoColor=white">
     - 기존은 카테고리, 품질, 가격으로 범위를 좁힌 후 검색하는 단어가 정확하게 상품명 혹은 상품 설명에 존재하는 모든 상품 정보를 가져오지만 ELASTIC SEARCH를 이용하여 단어 단위로, 상품명에 더 가중치를 주어 정보를 정렬하여 가져오게 변경
 
+<br>
+
 ## ERD
 ![ERD](doc/img/erd.png)
+
 <br>
+
 ## Trouble Shooting
 [go to the trouble shooting section](doc/TROUBLE_SHOOTING.md)
+
 <br>
+
 ### Development Environment
 <div align=center> 
  <img src="https://img.shields.io/badge/Windows 11-0078D6?style=for-the-badge&logo=Intellij Idea&logoColor=white">
@@ -294,7 +305,9 @@
   <img src="https://img.shields.io/badge/spring Boot 3.3.1-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
   <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
 </div>
+
 <br>
+
 ### Tech Stack
 <div align=center> 
   <img src="https://img.shields.io/badge/Spring-boot, Security, Data Jpa-gray?style=for-the-badge&logo=spring&labelColor=6DB33F&logoColor=white"> 
