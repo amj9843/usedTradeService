@@ -278,6 +278,7 @@
 
 ## 추가 기능
 위 기능들을 모두 개발한 후 시간이 된다면 차례대로 구현할 기능들입니다.
+
 - ### 회원 관리
     - 관련 기술: <img src="https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=json&logoColor=white">, <img src="https://img.shields.io/badge/Redis-FF4438?style=for-the-badge&logo=redis&logoColor=white">
     - JWT 토큰을 이용, redis에 블랙리스트를 추가하는 방식으로 로그아웃  구현
