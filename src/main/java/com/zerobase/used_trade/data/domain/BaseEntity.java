@@ -1,4 +1,4 @@
-package com.zerobase.used_trade.domain;
+package com.zerobase.used_trade.data.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
