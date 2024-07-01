@@ -1,6 +1,8 @@
 package com.zerobase.used_trade.data.constant;
 
-public enum ReportType {
+import com.zerobase.used_trade.data.constant.aware.DescriptionAware;
+
+public enum ReportType implements DescriptionAware {
   REPORT("신고"),
   SUGGEST("건의");
 
@@ -10,6 +12,7 @@ public enum ReportType {
     this.description = description;
   }
 
+  @Override
   public String description() {
     return description;
   }

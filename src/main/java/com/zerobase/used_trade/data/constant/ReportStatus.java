@@ -1,6 +1,8 @@
 package com.zerobase.used_trade.data.constant;
 
-public enum ReportStatus {
+import com.zerobase.used_trade.data.constant.aware.DescriptionAware;
+
+public enum ReportStatus implements DescriptionAware {
   REGIST("등록된 상태"),
   COMPLETED("처리/답변 완료된 상태");
 
@@ -10,6 +12,7 @@ public enum ReportStatus {
     this.description = description;
   }
 
+  @Override
   public String description() {
     return description;
   }

@@ -1,6 +1,8 @@
 package com.zerobase.used_trade.data.constant;
 
-public enum DealStatus {
+import com.zerobase.used_trade.data.constant.aware.DescriptionAware;
+
+public enum DealStatus implements DescriptionAware {
   APPLIED("거래 신청 상태"),
   APPROVED("거래 승인 상태"),
   DENIED("거래 거절 상태"),
@@ -17,6 +19,7 @@ public enum DealStatus {
     this.description = description;
   }
 
+  @Override
   public String description() {
     return description;
   }
