@@ -1,7 +1,7 @@
 package com.zerobase.used_trade.data.dto;
 
 import com.zerobase.used_trade.annotation.BusinessNumber;
-import com.zerobase.used_trade.annotation.DomainPattern;
+import com.zerobase.used_trade.annotation.DomainAddress;
 import com.zerobase.used_trade.annotation.EmptyOrNotBlank;
 import com.zerobase.used_trade.annotation.PhoneNumber;
 import com.zerobase.used_trade.annotation.ValidEnum;
@@ -54,7 +54,7 @@ public class DomainDto {
   @NoArgsConstructor
   public static class EnrollRequest {
     @NotEmpty(message = "{validation.Domain.address.NotEmpty}")
-    @DomainPattern
+    @DomainAddress
     private String domainAddress;
 
     @NotBlank(message = "{validation.Company.name.NotBlank}")
@@ -114,7 +114,7 @@ public class DomainDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class UpdateRequest{
-    @DomainPattern
+    @DomainAddress
     private String domainAddress;
 
     @EmptyOrNotBlank
