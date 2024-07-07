@@ -1,5 +1,6 @@
 package com.zerobase.used_trade.data.domain;
 
+import com.zerobase.used_trade.data.dto.DomainDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,8 +22,8 @@ public class Domain {
   @Column(name = "domain_id")
   private Long id;
 
-  @Column(name = "domain")
-  private String domain;
+  @Column(name = "domain_address")
+  private String domainAddress;
 
   @Column(name = "company_name")
   private String companyName;
@@ -48,26 +49,26 @@ public class Domain {
   @Column(name = "end_at")
   private LocalDateTime endAt;
 
-  public void update(
-      String domain, String companyName, String businessNumber,
-      String zipCode, String roadAddress, String address, String detail,
-      String phoneNumber, LocalDateTime endAt) {
-    this.domain = domain;
-    this.companyName = companyName;
-    this.businessNumber = businessNumber;
-    this.zipCode = zipCode;
-    this.roadAddress = roadAddress;
-    this.address = address;
-    this.detail = detail;
-    this.phoneNumber = phoneNumber;
+  public void update(DomainDto.UpdateRequest request) {
+    this.domainAddress = request.getDomainAddress();
+    this.companyName = request.getCompanyName();
+    this.businessNumber = request.getBusinessNumber();
+    this.zipCode = request.getZipCode();
+    this.roadAddress = request.getRoadAddress();
+    this.address = request.getAddress();
+    this.detail = request.getDetail();
+    this.phoneNumber = request.getPhoneNumber();
+  }
+
+  public void updateEndAt(LocalDateTime endAt) {
     this.endAt = endAt;
   }
 
   @Builder
-  public Domain(String domain, String companyName, String businessNumber,
+  public Domain(String domainAddress, String companyName, String businessNumber,
       String zipCode, String roadAddress, String address, String detail,
       String phoneNumber, LocalDateTime endAt) {
-    this.domain = domain;
+    this.domainAddress = domainAddress;
     this.companyName = companyName;
     this.businessNumber = businessNumber;
     this.zipCode = zipCode;

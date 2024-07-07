@@ -1,5 +1,7 @@
 package com.zerobase.used_trade.data.constant;
 
+import static java.lang.String.format;
+
 import com.zerobase.used_trade.data.constant.aware.DescriptionAware;
 
 public enum UserRole implements DescriptionAware {
@@ -16,5 +18,10 @@ public enum UserRole implements DescriptionAware {
   @Override
   public String description() {
     return description;
+  }
+
+  @Override
+  public String toString() {
+    return format("%s(%s)", this.name(), this.description);
   }
 }
