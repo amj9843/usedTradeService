@@ -9,6 +9,7 @@ import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.zerobase.used_trade.component.SpecificationBuilder;
 import com.zerobase.used_trade.data.constant.DomainFilterType;
 import com.zerobase.used_trade.data.constant.DomainSortType;
 import com.zerobase.used_trade.data.constant.EmployeeSortType;
@@ -31,11 +32,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 
 @ExtendWith(MockitoExtension.class)
 public class DomainServiceTest {
   @InjectMocks
   private DomainServiceImpl domainService;
+  @Mock
+  private SpecificationBuilder<Domain> specificationBuilder;
   @Mock
   private DomainRepository domainRepository;
 
@@ -91,7 +95,8 @@ public class DomainServiceTest {
         address, detail, phoneNumber, period
     );
 
-    given(domainRepository.findAll()).willReturn(Arrays.asList(
+    given(specificationBuilder.init()).willReturn(null);
+    given(domainRepository.findAll((Specification<Domain>) any())).willReturn(Arrays.asList(
         dto1.toEntity(), dto2.toEntity()
     ));
 
@@ -101,7 +106,7 @@ public class DomainServiceTest {
         DomainSortType.valueOf(criteria), DomainFilterType.valueOf(filter));
 
     //then
-    verify(domainRepository, times(1)).findAll();
+    verify(domainRepository, times(1)).findAll((Specification<Domain>) any());
 
     assertThat(domainPage.getContent().size()).isEqualTo(2);
     assertThat(domainPage.getContent().get(0).getDomainAddress()).isEqualTo("test2.com");
@@ -212,12 +217,12 @@ public class DomainServiceTest {
     );
 
     given(domainRepository.findById(anyLong())).willReturn(Optional.of(domain));
-    willDoNothing().given(domainRepository).delete(any());
+    willDoNothing().given(domainRepository).delete((Domain) any());
 
     //when
     domainService.deleteDomain(domainId);
 
     //then
-    verify(domainRepository, times(1)).delete(any());
+    verify(domainRepository, times(1)).delete((Domain) any());
   }
 }
