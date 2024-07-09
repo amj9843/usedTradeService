@@ -47,7 +47,7 @@ public class DomainDtoValidationTest {
     //then
     for (ConstraintViolation<EnrollRequest> violation: violations) {
       switch (violation.getPropertyPath().toString()) {
-        case "domain":
+        case "domainAddress":
           if (dto.getDomainAddress().isEmpty()) {
             assertThat(violation.getMessage()).isEqualTo("도메인 입력은 필수로, 빈 칸으로 입력할 수 없습니다.");
           } else {
@@ -136,7 +136,7 @@ public class DomainDtoValidationTest {
     //then
     for (ConstraintViolation<UpdateRequest> violation: violations) {
       switch (violation.getPropertyPath().toString()) {
-        case "domain":
+        case "domainAddress":
           assertThat(violation.getMessage()).isEqualTo("도메인 형식이 잘못되었습니다.");
           break;
         case "companyName":
