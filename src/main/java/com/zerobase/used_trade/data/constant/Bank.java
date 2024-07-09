@@ -1,5 +1,7 @@
 package com.zerobase.used_trade.data.constant;
 
+import static java.lang.String.format;
+
 import com.zerobase.used_trade.data.constant.aware.DescriptionAware;
 import java.util.Set;
 
@@ -44,12 +46,17 @@ public enum Bank implements DescriptionAware {
     this.accountNumberLengths = accountNumberLengths;
   }
 
+  public Boolean isMatch(String text) {
+    return accountNumberLengths.stream().anyMatch(it -> it == text.length());
+  }
+
   @Override
   public String description() {
     return description;
   }
 
-  public Boolean isMatch(String text) {
-    return accountNumberLengths.stream().anyMatch(it -> it == text.length());
+  @Override
+  public String toString() {
+    return format("%s(%s)", this.name(), this.description);
   }
 }

@@ -1,5 +1,7 @@
 package com.zerobase.used_trade.data.constant;
 
+import static java.lang.String.format;
+
 import com.zerobase.used_trade.data.constant.aware.DescriptionAware;
 import java.time.LocalDateTime;
 
@@ -16,12 +18,17 @@ public enum SubscribeType implements DescriptionAware {
     this.expirationPeriod = expirationPeriod;
   }
 
+  public LocalDateTime extension(LocalDateTime datetime) {
+    return datetime.plusMonths(expirationPeriod);
+  }
+
   @Override
   public String description() {
     return description;
   }
 
-  public LocalDateTime extension(LocalDateTime datetime) {
-    return datetime.plusMonths(expirationPeriod);
+  @Override
+  public String toString() {
+    return format("%s(%s)", this.name(), this.description);
   }
 }
