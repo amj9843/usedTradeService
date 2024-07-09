@@ -1,7 +1,7 @@
 package com.zerobase.used_trade.data.constant.aware;
 
-import java.util.List;
+import org.springframework.data.jpa.domain.Specification;
 
 public interface FilterTypeAware<T> {
-  List<T> processing(List<T> list);
+  Specification<T> processing(Specification<T> spec);
 }
