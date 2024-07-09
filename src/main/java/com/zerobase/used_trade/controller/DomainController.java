@@ -30,7 +30,7 @@ public class DomainController {
   private final DomainService domainService;
 
   @Operation(summary = "관리자 도메인 등록")
-  @PostMapping("/enroll")
+  @PostMapping
   public ResponseEntity<?> enrollDomain(@Validated @RequestBody DomainDto.EnrollRequest request) {
     return ResponseEntity.ok(
         ResultDto.res(SuccessCode.CREATED_SUCCESS.status(), SuccessCode.CREATED_SUCCESS.message(),
@@ -84,7 +84,7 @@ public class DomainController {
   }
 
   @Operation(summary = "도메인 정보 수정")
-  @PatchMapping("/update/{domainId}")
+  @PatchMapping("/{domainId}")
   public ResponseEntity<?> updateDomain(@PathVariable("domainId") Long domainId,
       @Validated @RequestBody DomainDto.UpdateRequest request) {
     this.domainService.updateDomainInfo(domainId, request);
@@ -95,7 +95,7 @@ public class DomainController {
   }
 
   @Operation(summary = "도메인 정보 삭제")
-  @DeleteMapping("/delete/{domainId}")
+  @DeleteMapping("/{domainId}")
   public ResponseEntity<?> deleteDomain(@PathVariable("domainId") Long domainId) {
     this.domainService.deleteDomain(domainId);
 

@@ -77,7 +77,7 @@ public class DomainControllerTest {
 
     //then
     mvc.perform(
-            post(format("%s/enroll", URL))
+            post(format("%s", URL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto))
                 .with(csrf())
@@ -209,7 +209,7 @@ public class DomainControllerTest {
 
     //then
     mvc.perform(
-            patch(format("%s/update/{id}", URL), id)
+            patch(format("%s/{id}", URL), id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto))
                 .with(csrf())
@@ -231,7 +231,7 @@ public class DomainControllerTest {
 
     //then
     mvc.perform(
-        delete(format("%s/delete/{id}", URL), id)
+        delete(format("%s/{id}", URL), id)
             .contentType(MediaType.APPLICATION_JSON)
             .with(csrf())
         )
