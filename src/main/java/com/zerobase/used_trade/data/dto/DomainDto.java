@@ -147,17 +147,17 @@ public class DomainDto {
     private CompanyInfo companyInformation;
     private Page<Employee> employees;
 
-    public DetailInfoResponse(Domain domainAddress, Page<Employee> employees) {
-      this.domainAddress = domainAddress.getDomainAddress();
-      this.valid = domainAddress.getEndAt().isAfter(LocalDateTime.now());
+    public DetailInfoResponse(Domain domain, Page<Employee> employees) {
+      this.domainAddress = domain.getDomainAddress();
+      this.valid = domain.getEndAt().isAfter(LocalDateTime.now());
       this.companyInformation = CompanyInfo.builder()
-          .name(domainAddress.getCompanyName())
-          .businessNumber(domainAddress.getBusinessNumber())
-          .zipCode(domainAddress.getZipCode())
-          .roadAddress(domainAddress.getRoadAddress())
-          .address(domainAddress.getAddress())
-          .detail(domainAddress.getDetail())
-          .phoneNumber(domainAddress.getPhoneNumber())
+          .name(domain.getCompanyName())
+          .businessNumber(domain.getBusinessNumber())
+          .zipCode(domain.getZipCode())
+          .roadAddress(domain.getRoadAddress())
+          .address(domain.getAddress())
+          .detail(domain.getDetail())
+          .phoneNumber(domain.getPhoneNumber())
           .build();
       this.employees = employees;
     }
