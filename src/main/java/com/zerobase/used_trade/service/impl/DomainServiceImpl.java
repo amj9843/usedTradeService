@@ -108,38 +108,13 @@ public class DomainServiceImpl implements DomainService {
     Domain domain = this.domainRepository.findById(domainId)
         .orElseThrow(NoDomainException::new);
 
-    if (request.getDomainAddress().isBlank()) {
-      request.setDomainAddress(domain.getDomainAddress());
-    }
     /* TODO(UserRepository 생성 이후) 값이 바뀌는 경우 기존 유저 테이블에서 이메일 주소의 도메인 변경
-      else {
+      if (request.getDomainAddress != null && !request.getDomainAddress().isBlank()) {
       int headCount = this.userRepository.updateEmailByDomainId(
           domain.getId(), "@" + domain.getDomainAddress(), "@" + request.getDomainAddress());
       log.info("modified domain on email for people. headcount -> " + headCount);
     }
      */
-    if (request.getCompanyName() == null || request.getCompanyName().isBlank()) {
-      request.setCompanyName(domain.getCompanyName());
-    }
-    if (request.getBusinessNumber() == null || request.getBusinessNumber().isBlank()) {
-      request.setBusinessNumber(domain.getBusinessNumber());
-    }
-    if (request.getZipCode() == null || request.getZipCode().isBlank()) {
-      request.setZipCode(domain.getZipCode());
-    }
-    if (request.getRoadAddress() == null || request.getRoadAddress().isBlank()) {
-      request.setRoadAddress(domain.getRoadAddress());
-    }
-    if (request.getAddress() == null || request.getAddress().isBlank()) {
-      request.setAddress(domain.getAddress());
-    }
-    if (request.getDetail() == null) {
-      request.setDetail(domain.getDetail());
-    }
-    if (request.getPhoneNumber() == null || request.getPhoneNumber().isBlank()) {
-      request.setPhoneNumber(domain.getPhoneNumber());
-    }
-
     domain.update(request);
   }
 

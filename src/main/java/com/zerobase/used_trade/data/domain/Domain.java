@@ -50,14 +50,30 @@ public class Domain {
   private LocalDateTime endAt;
 
   public void update(DomainDto.UpdateRequest request) {
-    this.domainAddress = request.getDomainAddress();
-    this.companyName = request.getCompanyName();
-    this.businessNumber = request.getBusinessNumber();
-    this.zipCode = request.getZipCode();
-    this.roadAddress = request.getRoadAddress();
-    this.address = request.getAddress();
-    this.detail = request.getDetail();
-    this.phoneNumber = request.getPhoneNumber();
+    if (request.getDomainAddress() != null && !request.getDomainAddress().isBlank()) {
+      this.domainAddress = request.getDomainAddress();
+    }
+    if (request.getCompanyName() != null && !request.getCompanyName().isBlank()) {
+      this.companyName = request.getCompanyName();
+    }
+    if (request.getBusinessNumber() != null && !request.getBusinessNumber().isBlank()) {
+      this.businessNumber = request.getBusinessNumber();
+    }
+    if (request.getZipCode() != null && !request.getZipCode().isBlank()) {
+      this.zipCode = request.getZipCode();
+    }
+    if (request.getRoadAddress() != null && !request.getRoadAddress().isBlank()) {
+      this.roadAddress = request.getRoadAddress();
+    }
+    if (request.getAddress() != null && !request.getAddress().isBlank()) {
+      this.address = request.getAddress();
+    }
+    if (request.getDetail() != null) {
+      this.detail = request.getDetail();
+    }
+    if (request.getPhoneNumber() != null && !request.getPhoneNumber().isBlank()) {
+      this.phoneNumber = request.getPhoneNumber();
+    }
   }
 
   public void updateEndAt(LocalDateTime endAt) {
