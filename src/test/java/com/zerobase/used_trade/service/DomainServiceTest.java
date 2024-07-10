@@ -20,6 +20,7 @@ import com.zerobase.used_trade.data.dto.DomainDto.EnrollRequest;
 import com.zerobase.used_trade.data.dto.DomainDto.Principle;
 import com.zerobase.used_trade.data.dto.DomainDto.UpdateRequest;
 import com.zerobase.used_trade.repository.DomainRepository;
+import com.zerobase.used_trade.repository.UserRepository;
 import com.zerobase.used_trade.service.impl.DomainServiceImpl;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -42,6 +43,8 @@ public class DomainServiceTest {
   private SpecificationBuilder<Domain> specificationBuilder;
   @Mock
   private DomainRepository domainRepository;
+  @Mock
+  private UserRepository userRepository;
 
   public static String domainAddress = "test.com";
   public static String companyName = "test_company";
@@ -68,6 +71,7 @@ public class DomainServiceTest {
 
     given(domainRepository.existsByDomainAddress(anyString())).willReturn(false);
     given(domainRepository.save(any())).willReturn(dto.toEntity());
+    given(userRepository.updateDomainId(any(), anyString(), any())).willReturn(2);
 
     //when
     Principle domain = domainService.enrollDomain(dto);
@@ -75,6 +79,7 @@ public class DomainServiceTest {
 
     //then
     verify(domainRepository, times(1)).save(domainCaptor.capture());
+    verify(userRepository, times(1)).updateDomainId(any(), anyString(), any());
 
     assertThat(domainCaptor.getValue().getDomainAddress()).isEqualTo(domainAddress);
     assertThat(domainCaptor.getValue().getCompanyName()).isEqualTo(companyName);
@@ -186,12 +191,14 @@ public class DomainServiceTest {
     Domain domain = enrollDto.toEntity();
 
     given(domainRepository.findById(anyLong())).willReturn(Optional.of(domain));
+    given(userRepository.updateEmailByDomainId(any(), anyString(), anyString())).willReturn(2);
 
     //when
     domainService.updateDomainInfo(domainId, updateDto);
 
     //then
     verify(domainRepository, times(1)).findById(domainId);
+    verify(userRepository, times(1)).updateEmailByDomainId(any(), anyString(), anyString());
 
     assertThat(domain.getDomainAddress()).isEqualTo("test2.com");
     assertThat(domain.getCompanyName()).isEqualTo("change_name");
@@ -217,12 +224,14 @@ public class DomainServiceTest {
     );
 
     given(domainRepository.findById(anyLong())).willReturn(Optional.of(domain));
+    given(userRepository.updateRoleByDomainId(any(), any())).willReturn(2);
     willDoNothing().given(domainRepository).delete((Domain) any());
 
     //when
     domainService.deleteDomain(domainId);
 
     //then
+    verify(userRepository, times(1)).updateRoleByDomainId(any(), any());
     verify(domainRepository, times(1)).delete((Domain) any());
   }
 }
