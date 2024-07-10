@@ -66,8 +66,8 @@ public class UserDto {
           .domainId(domainId)
           .email(this.email)
           .password(this.password)
-          .name(this.name)
-          .nickName(this.nickName)
+          .name(this.name.trim())
+          .nickName(this.nickName.trim())
           .phoneNumber(this.phoneNumber)
           .role((domainId == null || domainId == 0L) ?
               UserRole.USER : UserRole.ADMIN)
