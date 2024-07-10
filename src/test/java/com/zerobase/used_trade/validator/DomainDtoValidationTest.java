@@ -27,7 +27,7 @@ public class DomainDtoValidationTest {
 
   @DisplayName("DomainDto.EnrollRequest 유효성 검사")
   @Test
-  void EnrollRequestValidation() {
+  void enrollRequestValidation() {
     //given
     EnrollRequest dto =
         new EnrollRequest(
@@ -98,7 +98,7 @@ public class DomainDtoValidationTest {
 
   @DisplayName("DomainDto.ExtensionRequest 유효성 검사")
   @Test
-  void ExtensionRequestValidation() {
+  void extensionRequestValidation() {
     //given
     ExtensionRequest dto =
         new ExtensionRequest("");
@@ -116,7 +116,7 @@ public class DomainDtoValidationTest {
 
   @DisplayName("DomainDto.UpdateRequest 유효성 검사")
   @Test
-  void UpdateRequestValidation() {
+  void updateRequestValidation() {
     //given
     UpdateRequest dto =
         new UpdateRequest(
