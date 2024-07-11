@@ -48,7 +48,7 @@ public class DomainServiceImpl implements DomainService {
     int headCount = this.userRepository.updateDomainId(domain.getId(),
         "@" + domain.getDomainAddress(), UserRole.ADMIN.name());
     if (headCount > 0) {
-      log.info("enroll domainId for people. headcount -> " + headCount);
+      log.info("enroll domainId for people. headcount -> {} ", headCount);
     }
 
     return Principle.fromEntity(domain);
@@ -111,7 +111,7 @@ public class DomainServiceImpl implements DomainService {
     if (request.getDomainAddress() != null && !request.getDomainAddress().isBlank()) {
       int headCount = this.userRepository.updateEmailByDomainId(
           domain.getId(), "@" + domain.getDomainAddress(), "@" + request.getDomainAddress());
-      log.info("modified domain on email for people. headcount -> " + headCount);
+      log.info("modified domain on email for people. headcount -> {} ", headCount);
     }
 
     domain.update(request);
@@ -129,7 +129,7 @@ public class DomainServiceImpl implements DomainService {
 
     int headCount = this.userRepository.updateRoleByDomainId(domainId, UserRole.USER.name());
     if (headCount > 0) {
-      log.info("change role by domainId. headcount -> " + headCount);
+      log.info("change role by domainId. headcount -> {} ", headCount);
     }
 
     this.domainRepository.delete(domain);
