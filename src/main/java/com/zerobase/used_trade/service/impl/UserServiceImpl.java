@@ -1,5 +1,7 @@
 package com.zerobase.used_trade.service.impl;
 
+import static com.zerobase.used_trade.util.EmailUtility.getDomainFromEmail;
+
 import com.zerobase.used_trade.data.domain.User;
 import com.zerobase.used_trade.data.dto.UserDto.Principle;
 import com.zerobase.used_trade.data.dto.UserDto.SignUpRequest;
@@ -32,8 +34,7 @@ public class UserServiceImpl implements UserService {
 
     //DB에 저장
     User user = userRepository.save(request.toEntity(
-        this.domainRepository.findIdByDomainAddress(request.getEmail().substring(
-            request.getEmail().lastIndexOf("@")+1)))
+        this.domainRepository.findIdByDomainAddress(getDomainFromEmail(request.getEmail())))
     );
 
     return Principle.fromEntity(user);

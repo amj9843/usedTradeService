@@ -1,5 +1,7 @@
 package com.zerobase.used_trade.service.impl;
 
+import static com.zerobase.used_trade.util.EmailUtility.getDomainFromDomainAddress;
+
 import com.zerobase.used_trade.component.PageConverter;
 import com.zerobase.used_trade.component.SpecificationBuilder;
 import com.zerobase.used_trade.data.constant.DomainFilterType;
@@ -46,7 +48,7 @@ public class DomainServiceImpl implements DomainService {
     Domain domain = this.domainRepository.save(request.toEntity());
 
     int headCount = this.userRepository.updateDomainId(domain.getId(),
-        "@" + domain.getDomainAddress(), UserRole.ADMIN.name());
+        getDomainFromDomainAddress(domain.getDomainAddress()), UserRole.ADMIN.name());
     if (headCount > 0) {
       log.info("enroll domainId for people. headcount -> {} ", headCount);
     }
@@ -110,7 +112,8 @@ public class DomainServiceImpl implements DomainService {
 
     if (request.getDomainAddress() != null && !request.getDomainAddress().isBlank()) {
       int headCount = this.userRepository.updateEmailByDomainId(
-          domain.getId(), "@" + domain.getDomainAddress(), "@" + request.getDomainAddress());
+          domain.getId(), getDomainFromDomainAddress(domain.getDomainAddress()),
+          getDomainFromDomainAddress(request.getDomainAddress()));
       log.info("modified domain on email for people. headcount -> {} ", headCount);
     }
 
