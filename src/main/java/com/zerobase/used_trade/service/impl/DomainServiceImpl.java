@@ -1,11 +1,14 @@
 package com.zerobase.used_trade.service.impl;
 
+import static com.zerobase.used_trade.util.EmailUtility.getDomainFromDomainAddress;
+
 import com.zerobase.used_trade.component.PageConverter;
 import com.zerobase.used_trade.component.SpecificationBuilder;
 import com.zerobase.used_trade.data.constant.DomainFilterType;
 import com.zerobase.used_trade.data.constant.DomainSortType;
 import com.zerobase.used_trade.data.constant.EmployeeSortType;
 import com.zerobase.used_trade.data.constant.SubscribeType;
+import com.zerobase.used_trade.data.constant.UserRole;
 import com.zerobase.used_trade.data.domain.Domain;
 import com.zerobase.used_trade.data.dto.DomainDto.DetailInfoResponse;
 import com.zerobase.used_trade.data.dto.DomainDto.EnrollRequest;
@@ -15,6 +18,7 @@ import com.zerobase.used_trade.exception.impl.AlreadyExistsDomainAddressExceptio
 import com.zerobase.used_trade.exception.impl.CannotDeleteDomainBeforeExpiredException;
 import com.zerobase.used_trade.exception.impl.NoDomainException;
 import com.zerobase.used_trade.repository.DomainRepository;
+import com.zerobase.used_trade.repository.UserRepository;
 import com.zerobase.used_trade.service.DomainService;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -31,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DomainServiceImpl implements DomainService {
   private final DomainRepository domainRepository;
   private final SpecificationBuilder<Domain> specificationBuilder;
-  //TODO(UserRepository 생성 이후) private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
   @Override
   @Transactional
@@ -43,13 +47,11 @@ public class DomainServiceImpl implements DomainService {
 
     Domain domain = this.domainRepository.save(request.toEntity());
 
-    /* TODO(UserRepository 생성 이후) 이미 등록하려는 도메인으로 가입되어있는 회원이 있다면 회원 정보에 domainId 등록, 권한 변경
-     int headCount = this.userRepository.updateDomainId(domain.getId(),
-             "@" + domain.getDomainAddress(), UserRole.ADMIN);
-         if (headCount > 0) {
-           log.info("enroll domainId for people. headcount -> " + headCount);
-         }
-     */
+    int headCount = this.userRepository.updateDomainId(domain.getId(),
+        getDomainFromDomainAddress(domain.getDomainAddress()), UserRole.ADMIN.name());
+    if (headCount > 0) {
+      log.info("enroll domainId for people. headcount -> {} ", headCount);
+    }
 
     return Principle.fromEntity(domain);
   }
@@ -108,13 +110,13 @@ public class DomainServiceImpl implements DomainService {
     Domain domain = this.domainRepository.findById(domainId)
         .orElseThrow(NoDomainException::new);
 
-    /* TODO(UserRepository 생성 이후) 값이 바뀌는 경우 기존 유저 테이블에서 이메일 주소의 도메인 변경
-      if (request.getDomainAddress != null && !request.getDomainAddress().isBlank()) {
+    if (request.getDomainAddress() != null && !request.getDomainAddress().isBlank()) {
       int headCount = this.userRepository.updateEmailByDomainId(
-          domain.getId(), "@" + domain.getDomainAddress(), "@" + request.getDomainAddress());
-      log.info("modified domain on email for people. headcount -> " + headCount);
+          domain.getId(), getDomainFromDomainAddress(domain.getDomainAddress()),
+          getDomainFromDomainAddress(request.getDomainAddress()));
+      log.info("modified domain on email for people. headcount -> {} ", headCount);
     }
-     */
+
     domain.update(request);
   }
 
@@ -127,13 +129,11 @@ public class DomainServiceImpl implements DomainService {
     if (LocalDateTime.now().isBefore(domain.getEndAt())) {
       throw new CannotDeleteDomainBeforeExpiredException();
     }
-    
-    /* TODO(UserRepository 생성 이후) 도메인에 해당하는 User 권한 일반 사용자로 변경
-    int headCount = this.userRepository.updateRoleByDomainId(domainId, UserRole.USER);
+
+    int headCount = this.userRepository.updateRoleByDomainId(domainId, UserRole.USER.name());
     if (headCount > 0) {
-      log.info("change role by domainId. headcount -> " + headCount);
+      log.info("change role by domainId. headcount -> {} ", headCount);
     }
-     */
 
     this.domainRepository.delete(domain);
   }
