@@ -2,7 +2,9 @@ package com.zerobase.used_trade.validator;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import com.zerobase.used_trade.data.dto.UserDto.SignInRequest;
 import com.zerobase.used_trade.data.dto.UserDto.SignUpRequest;
+import com.zerobase.used_trade.data.dto.UserDto.UpdateRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -75,7 +77,37 @@ public class UserDtoValidationTest {
     assertThat(violations.size()).isEqualTo(5); //틀리게 입력한 DTO 내 항목 개수
   }
 
-  /*TODO UserDto.UpdateRequest 유효성 검사
+  @DisplayName("UserDto.SignInRequest 유효성 검사")
+  @Test
+  void signInRequestValidation() {
+    //given
+    SignInRequest dto =
+        new SignInRequest(
+            "  ", " ");
+
+    //when
+    Set<ConstraintViolation<SignInRequest>> violations = validator.validate(dto);
+
+    //then
+    for (ConstraintViolation<SignInRequest> violation: violations) {
+      switch (violation.getPropertyPath().toString()) {
+        case "email":
+          if (dto.getEmail().isEmpty()) {
+            assertThat(violation.getMessage()).isEqualTo("이메일 입력은 필수로, 빈 칸으로 입력할 수 없습니다.");
+          } else {
+            assertThat(violation.getMessage()).isEqualTo("이메일 입력 형식이 잘못되었습니다. 아이디@도메인주소 형식으로 입력되어있는지 확인해주세요.");
+          }
+          break;
+        case "password":
+          assertThat(violation.getMessage()).isEqualTo("비밀번호 입력은 필수로, 빈 칸으로 입력할 수 없습니다.");
+          break;
+        default:
+          break;
+      }
+    }
+    assertThat(violations.size()).isEqualTo(1); //틀리게 입력한 DTO 내 항목 개수
+  }
+
   @DisplayName("UserDto.UpdateRequest 유효성 검사")
   @Test
   void updateRequestValidation() {
@@ -115,5 +147,4 @@ public class UserDtoValidationTest {
     }
     assertThat(violations.size()).isEqualTo(4); //틀리게 입력한 DTO 내 항목 개수
   }
-   */
 }
