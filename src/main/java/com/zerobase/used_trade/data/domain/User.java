@@ -52,10 +52,10 @@ public class User {
       this.password = request.getPassword();
     }
     if (request.getName() != null && !request.getName().isBlank()) {
-      this.name = request.getName();
+      this.name = request.getName().trim();
     }
     if (request.getNickName() != null && !request.getNickName().isBlank()) {
-      this.nickName = request.getNickName();
+      this.nickName = request.getNickName().trim();
     }
     if (request.getPhoneNumber() != null) {
       this.phoneNumber = request.getPhoneNumber();
