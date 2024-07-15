@@ -81,6 +81,7 @@ public class DomainDto {
     @PhoneNumber
     private String phoneNumber;
 
+    @NotEmpty(message = "{validation.Domain.period.NotEmpty}")
     @ValidEnum(enumClass = SubscribeType.class)
     private String period;
 
@@ -106,6 +107,7 @@ public class DomainDto {
   @AllArgsConstructor
   @NoArgsConstructor
   public static class ExtensionRequest {
+    @NotEmpty(message = "{validation.Domain.period.NotEmpty}")
     @ValidEnum(enumClass = SubscribeType.class)
     private String period;
   }

@@ -88,7 +88,11 @@ public class DomainDtoValidationTest {
           }
           break;
         case "period":
-          assertThat(violation.getMessage()).contains("지정된 항목 중 하나를 입력해야 합니다. 입력 가능 항목(설명): ");
+          if (dto.getPeriod().isEmpty()) {
+            assertThat(violation.getMessage()).isEqualTo("도메인의 구독 종류 입력은 필수로, 빈 칸으로 입력할 수 없습니다.");
+          } else {
+            assertThat(violation.getMessage()).contains("지정된 항목 중 하나를 입력해야 합니다. 입력 가능 항목(설명): ");
+          }
         default:
           break;
       }
@@ -109,7 +113,11 @@ public class DomainDtoValidationTest {
     //then
     for (ConstraintViolation<ExtensionRequest> violation: violations) {
       assertThat(violation.getPropertyPath().toString()).isEqualTo("period");
-      assertThat(violation.getMessage()).contains("지정된 항목 중 하나를 입력해야 합니다. 입력 가능 항목(설명): ");
+      if (dto.getPeriod() == null || dto.getPeriod().isEmpty()) {
+        assertThat(violation.getMessage()).isEqualTo("도메인의 구독 종류 입력은 필수로, 빈 칸으로 입력할 수 없습니다.");
+      } else {
+        assertThat(violation.getMessage()).contains("지정된 항목 중 하나를 입력해야 합니다. 입력 가능 항목(설명): ");
+      }
     }
     assertThat(violations.size()).isEqualTo(1);
   }
