@@ -82,16 +82,18 @@ public class UserServiceImpl implements UserService {
         .orElseThrow(NoUserException::new);
 
     //비밀번호 변경이 있는 경우 비밀번호 확인이 일치하는지 확인
-    if (request.getPassword() != null && !request.getPassword().isBlank()) {
-      if (request.getPasswordConfirm() == null || request.getPasswordConfirm().isBlank()) {
-        throw new NoPasswordConfirmException();
-      } else if (!this.passwordEncoder.matches(request.getPasswordConfirm(), user.getPassword())) {
-        throw new IncorrectPasswordOnConfirmException();
-      }
-
-      request.setPassword(this.passwordEncoder.encode(request.getPassword()));
+    if (request.getPassword() == null || request.getPassword().isBlank()) {
+      user.update(request);
+      return;
     }
 
+    if (request.getPasswordConfirm() == null || request.getPasswordConfirm().isBlank()) {
+      throw new NoPasswordConfirmException();
+    } else if (!this.passwordEncoder.matches(request.getPasswordConfirm(), user.getPassword())) {
+      throw new IncorrectPasswordOnConfirmException();
+    }
+
+    request.setPassword(this.passwordEncoder.encode(request.getPassword()));
     user.update(request);
   }
 }
