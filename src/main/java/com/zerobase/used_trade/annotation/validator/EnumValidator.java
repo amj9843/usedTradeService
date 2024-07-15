@@ -18,6 +18,10 @@ public class EnumValidator implements ConstraintValidator<ValidEnum, String> {
 
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
+    if (value == null || value.isEmpty()) {
+      return true;
+    }
+
     boolean isValid = validList.stream().anyMatch(enumValue-> enumValue.name().equals(value));
 
     if (!isValid) {
