@@ -8,8 +8,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,33 +30,27 @@ public class UserController {
     );
   }
 
-  /*
-  TODO 로그인
   @Operation(summary = "로그인")
   @PostMapping("/sign-in")
   public ResponseEntity<?> signIn(@Validated @RequestBody UserDto.SignInRequest request) {
     return ResponseEntity.ok(
-        ResultDto.res(SuccessCode.CREATED_SUCCESS.status(), SuccessCode.CREATED_SUCCESS.message(),
+        ResultDto.res(SuccessCode.SIGN_IN_SUCCESS.status(), SuccessCode.SIGN_IN_SUCCESS.message(),
             this.userService.signIn(request))
     );
   }
-   */
 
-  /*
-  TODO 회원 정보 변경
   @Operation(summary = "사용자(로그인한 사용자) 정보 변경")
-  @PatchMapping("/{userId}")
-  public ResponseEntity<?> updateUserInfo(@PathVariable("userId") Long userId,
-      //TODO 임시로 RequestParam에 로그인한 userId를 받아옴, token 발급 이후는 @Authentication 에서 받아옴
-      @RequestParam(name = "signInUserId") Long signInUserId,
+  @PatchMapping
+  public ResponseEntity<?> updateUserInfo(
+      //TODO JWT 사용이후는 @AuthenticationPrincipal 이용, CustomUserDetails 가져옴
+      @RequestHeader("Authorization") Long userId,
       @Validated @RequestBody UserDto.UpdateRequest request) {
-    this.userService.updateUserInfo(userId, signInUserId, request);
+    this.userService.updateUserInfo(userId, request);
 
     return ResponseEntity.ok(
         ResultDto.res(SuccessCode.UPDATED_SUCCESS.status(), SuccessCode.UPDATED_SUCCESS.message())
     );
   }
-   */
 
   /*
   TODO 회원 권한 변경

@@ -2,6 +2,7 @@ package com.zerobase.used_trade.repository;
 
 import com.zerobase.used_trade.data.domain.User;
 import com.zerobase.used_trade.repository.custom.CustomUserRepository;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long>, CustomUserRepository {
   //이메일 중복값 확인
   boolean existsByEmail(String email);
+
+  Optional<User> findByEmail(String email);
 
   @Modifying
   @Query(value = "update User u set u.domain_id = :domainId, u.role = :role where u.email like %:domainAddress",

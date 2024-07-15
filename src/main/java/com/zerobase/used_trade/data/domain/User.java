@@ -1,6 +1,7 @@
 package com.zerobase.used_trade.data.domain;
 
 import com.zerobase.used_trade.data.constant.UserRole;
+import com.zerobase.used_trade.data.dto.UserDto.UpdateRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -46,11 +47,19 @@ public class User {
   private UserRole role;
 
   public void update(
-      String password, String name, String nickName, String phoneNumber) {
-    this.password = password;
-    this.name = name;
-    this.nickName = nickName;
-    this.phoneNumber = phoneNumber;
+      UpdateRequest request) {
+    if (request.getPassword() != null && !request.getPassword().isBlank()) {
+      this.password = request.getPassword();
+    }
+    if (request.getName() != null && !request.getName().isBlank()) {
+      this.name = request.getName().trim();
+    }
+    if (request.getNickName() != null && !request.getNickName().isBlank()) {
+      this.nickName = request.getNickName().trim();
+    }
+    if (request.getPhoneNumber() != null) {
+      this.phoneNumber = request.getPhoneNumber();
+    }
   }
 
   @Builder

@@ -2,8 +2,11 @@ package com.zerobase.used_trade.controller;
 
 import static java.lang.String.format;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -12,7 +15,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.used_trade.data.constant.SuccessCode;
 import com.zerobase.used_trade.data.constant.UserRole;
 import com.zerobase.used_trade.data.dto.UserDto.Principle;
+import com.zerobase.used_trade.data.dto.UserDto.SignInRequest;
+import com.zerobase.used_trade.data.dto.UserDto.SignInResponse;
 import com.zerobase.used_trade.data.dto.UserDto.SignUpRequest;
+import com.zerobase.used_trade.data.dto.UserDto.UpdateRequest;
 import com.zerobase.used_trade.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,7 +49,7 @@ public class UserControllerTest {
   @DisplayName("회원 가입")
   @WithMockUser
   @Test
-  void enrollDomain() throws Exception {
+  void signUp() throws Exception {
     //given
     SignUpRequest dto = new SignUpRequest(
         email, password, name, nickName, phoneNumber
@@ -54,7 +60,7 @@ public class UserControllerTest {
 
     //then
     mvc.perform(
-            post(format("%s", URL))
+            post(format("%s/sign-up", URL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto))
                 .with(csrf())
@@ -63,5 +69,52 @@ public class UserControllerTest {
         .andExpect(jsonPath("$.code").value(SuccessCode.CREATED_SUCCESS.status().value()))
         .andExpect(jsonPath("$.data.email").value(email))
         .andExpect(jsonPath("$.data.role").value(UserRole.ADMIN.name()));
+  }
+  @DisplayName("로그인")
+  @WithMockUser
+  @Test
+  void signIn() throws Exception {
+    //given
+    SignInRequest dto = new SignInRequest(
+        email, password
+    );
+
+    //when
+    when(userService.signIn(any())).thenReturn(new SignInResponse(1L));
+
+    //then
+    mvc.perform(
+        post(format("%s/sign-in", URL))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(dto))
+            .with(csrf())
+    )
+    .andExpect(status().isOk())
+    .andExpect(jsonPath("$.code").value(SuccessCode.SIGN_IN_SUCCESS.status().value()))
+    .andExpect(jsonPath("$.data.id").value(1L));
+  }
+
+  @DisplayName("사용자 정보 변경")
+  @WithMockUser
+  @Test
+  void updateUserInfo() throws Exception {
+    //given
+    Long userId = 1L;
+    UpdateRequest dto = new UpdateRequest(
+        null, null, "changeName", null, null
+    );
+
+    doNothing().when(userService).updateUserInfo(anyLong(), any());
+    //then
+    mvc.perform(
+            patch(format("%s", URL))
+                .header("Authorization", userId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dto))
+                .with(csrf())
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.code").value(SuccessCode.UPDATED_SUCCESS.status().value()))
+        .andExpect(jsonPath("$.data").doesNotExist());
   }
 }

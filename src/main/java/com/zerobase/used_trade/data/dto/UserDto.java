@@ -1,6 +1,7 @@
 package com.zerobase.used_trade.data.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
+import com.zerobase.used_trade.annotation.EmptyOrNotBlank;
 import com.zerobase.used_trade.annotation.Password;
 import com.zerobase.used_trade.annotation.PhoneNumber;
 import com.zerobase.used_trade.annotation.ShortString;
@@ -75,7 +76,6 @@ public class UserDto {
     }
   }
 
-  /* TODO 로그인 requestDTO
   @Data
   @AllArgsConstructor
   @NoArgsConstructor
@@ -87,17 +87,16 @@ public class UserDto {
     @NotEmpty(message = "{validation.User.password.NotEmpty}")
     private String password;
   }
-   */
 
-  /* TODO 로그인 responseDTO(TOKEN 이용 후는 토큰, 이용 전엔 로그인한 식별번호 출력)
   @Data
   @AllArgsConstructor
   public static class SignInResponse {
+    private Long id;
+    /*TODO 토큰 구현하면 response token 으로 변경
     private String token;
+     */
   }
-   */
 
-  /* TODO 회원정보변경 requestDTO
   @Data
   @NoArgsConstructor
   @AllArgsConstructor
@@ -118,7 +117,6 @@ public class UserDto {
     @PhoneNumber
     private String phoneNumber;
   }
-   */
 
   @Data
   public static class Employee{
