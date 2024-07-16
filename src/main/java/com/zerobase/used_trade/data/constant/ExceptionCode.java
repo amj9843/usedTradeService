@@ -22,7 +22,10 @@ public enum ExceptionCode implements CodeAware {
   NO_ACCOUNT(HttpStatus.NOT_FOUND, "식별번호에 해당하는 계좌 정보가 없습니다."),
   NO_AUTHORIZE(HttpStatus.FORBIDDEN, "실행 권한이 없습니다."),
   NO_ADDRESS(HttpStatus.NOT_FOUND, "식별번호에 해당하는 주소가 없습니다."),
-  CANNOT_DELETE_ONLY_ONE(HttpStatus.FORBIDDEN, "대표로 설정될 다른 주소/계좌가 등록되어 있어야 합니다.");
+  CANNOT_DELETE_ONLY_ONE(HttpStatus.FORBIDDEN, "대표로 설정될 다른 주소/계좌가 등록되어 있어야 합니다."),
+  ALREADY_EXISTS_CATEGORY(HttpStatus.CONFLICT, "이미 중복되는 카테고리명이 있습니다."),
+  NO_CATEGORY(HttpStatus.NOT_FOUND, "식별번호에 해당하는 카테고리가 없습니다."),
+  CANNOT_DELETE_CONTAIN_PRODUCT(HttpStatus.FORBIDDEN, "카테고리에 속하는 상품이 있으면 카테고리 삭제가 불가합니다.");
 
   private final HttpStatus status;
   private final String message;
