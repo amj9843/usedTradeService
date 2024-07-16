@@ -69,7 +69,6 @@ public class DomainServiceTest {
         address, detail, phoneNumber, period
     );
 
-    given(domainRepository.existsByDomainAddress(anyString())).willReturn(false);
     given(domainRepository.save(any())).willReturn(dto.toEntity());
     given(userRepository.updateDomainId(any(), anyString(), any())).willReturn(2);
 

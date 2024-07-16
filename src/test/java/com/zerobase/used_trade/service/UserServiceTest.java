@@ -55,7 +55,6 @@ public class UserServiceTest {
         email, password, name, nickName, phoneNumber
     );
 
-    given(userRepository.existsByEmail(anyString())).willReturn(false);
     given(domainRepository.findIdByDomainAddress(anyString())).willReturn(domainId);
     given(userRepository.save(any())).willReturn(dto.toEntity(domainId));
 

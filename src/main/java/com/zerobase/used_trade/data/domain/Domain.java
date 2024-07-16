@@ -22,7 +22,7 @@ public class Domain {
   @Column(name = "domain_id")
   private Long id;
 
-  @Column(name = "domain_address")
+  @Column(name = "domain_address", unique = true)
   private String domainAddress;
 
   @Column(name = "company_name")

@@ -13,7 +13,16 @@ public enum ExceptionCode implements CodeAware {
   INCORRECT_PASSWORD_ON_SIGN_IN(HttpStatus.UNAUTHORIZED, "패스워드가 일치하지 않습니다."),
   INCORRECT_PASSWORD_ON_CONFIRM(HttpStatus.UNAUTHORIZED, "본인 확인을 위한 패스워드가 일치하지 않습니다."),
   EXPIRED_DOMAIN_ADDRESS(HttpStatus.UNAUTHORIZED, "만료된 도메인 주소 이용자는 이용할 수 없습니다."),
-  NO_PASSWORD_CONFIRM(HttpStatus.BAD_REQUEST, "반드시 비밀번호 확인을 입력해야 합니다.");
+  NO_PASSWORD_CONFIRM(HttpStatus.BAD_REQUEST, "반드시 비밀번호 확인을 입력해야 합니다."),
+  ALREADY_EXISTS_ACCOUNT(HttpStatus.CONFLICT, "이미 등록되어있는 계좌 정보입니다."),
+  ALREADY_EXISTS_ADDRESS(HttpStatus.CONFLICT, "이미 등록되어있는 주소 정보입니다."),
+  ALREADY_MAX_COUNT_ACCOUNT(HttpStatus.CONFLICT, "이미 등록할 수 있는 계좌 정보 개수가 모두 찼습니다."),
+  ALREADY_MAX_COUNT_ADDRESS(HttpStatus.CONFLICT, "이미 등록할 수 있는 주소 정보 개수가 모두 찼습니다."),
+  INVALID_ACCOUNT_NUMBER(HttpStatus.BAD_REQUEST, "등록하려는 계좌 번호가 은행과 맞지 않습니다."),
+  NO_ACCOUNT(HttpStatus.NOT_FOUND, "식별번호에 해당하는 계좌 정보가 없습니다."),
+  NO_AUTHORIZE(HttpStatus.FORBIDDEN, "실행 권한이 없습니다."),
+  NO_ADDRESS(HttpStatus.NOT_FOUND, "식별번호에 해당하는 주소가 없습니다."),
+  CANNOT_DELETE_ONLY_ONE(HttpStatus.FORBIDDEN, "대표로 설정될 다른 주소/계좌가 등록되어 있어야 합니다.");
 
   private final HttpStatus status;
   private final String message;

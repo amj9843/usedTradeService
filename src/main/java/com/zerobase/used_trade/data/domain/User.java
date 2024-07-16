@@ -27,7 +27,7 @@ public class User {
   @Column(name = "domain_id")
   private Long domainId;
 
-  @Column(name = "email")
+  @Column(name = "email", unique = true)
   private String email;
 
   @Column(name = "password")

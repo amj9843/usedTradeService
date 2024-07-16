@@ -21,6 +21,7 @@ import com.zerobase.used_trade.repository.UserRepository;
 import com.zerobase.used_trade.service.UserService;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,20 +36,20 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public Principle signUp(SignUpRequest request) {
-    //이메일 중복 확인
-    if (this.userRepository.existsByEmail(request.getEmail())) {
-      throw new AlreadyExistsEmailException();
-    }
-
     //비밀번호 암호화하여 세팅
     request.setPassword(this.passwordEncoder.encode(request.getPassword()));
 
     //DB에 저장
-    User user = this.userRepository.save(request.toEntity(
-        this.domainRepository.findIdByDomainAddress(getDomainFromEmail(request.getEmail())))
-    );
+    try {
+      User user = this.userRepository.save(request.toEntity(
+          this.domainRepository.findIdByDomainAddress(getDomainFromEmail(request.getEmail())))
+      );
 
-    return Principle.fromEntity(user);
+      return Principle.fromEntity(user);
+    } catch (DataIntegrityViolationException e) {
+      //이메일 중복으로 저장이 되지 않을 시
+      throw new AlreadyExistsEmailException();
+    }
   }
 
   @Override

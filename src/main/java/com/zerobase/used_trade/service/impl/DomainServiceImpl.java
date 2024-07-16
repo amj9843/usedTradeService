@@ -23,6 +23,7 @@ import com.zerobase.used_trade.service.DomainService;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -40,20 +41,20 @@ public class DomainServiceImpl implements DomainService {
   @Override
   @Transactional
   public Principle enrollDomain(EnrollRequest request) {
-    //동일한 도메인 주소가 있는지 확인
-    if (this.domainRepository.existsByDomainAddress(request.getDomainAddress())) {
+    try {
+      Domain domain = this.domainRepository.save(request.toEntity());
+
+      int headCount = this.userRepository.updateDomainId(domain.getId(),
+          getDomainFromDomainAddress(domain.getDomainAddress()), UserRole.ADMIN.name());
+      if (headCount > 0) {
+        log.info("enroll domainId for people. headcount -> {} ", headCount);
+      }
+
+      return Principle.fromEntity(domain);
+    } catch (DataIntegrityViolationException e) {
+      //도메인 주소 중복으로 저장이 안 된 경우
       throw new AlreadyExistsDomainAddressException();
     }
-
-    Domain domain = this.domainRepository.save(request.toEntity());
-
-    int headCount = this.userRepository.updateDomainId(domain.getId(),
-        getDomainFromDomainAddress(domain.getDomainAddress()), UserRole.ADMIN.name());
-    if (headCount > 0) {
-      log.info("enroll domainId for people. headcount -> {} ", headCount);
-    }
-
-    return Principle.fromEntity(domain);
   }
 
   @Override
@@ -110,14 +111,19 @@ public class DomainServiceImpl implements DomainService {
     Domain domain = this.domainRepository.findById(domainId)
         .orElseThrow(NoDomainException::new);
 
-    if (request.getDomainAddress() != null && !request.getDomainAddress().isBlank()) {
-      int headCount = this.userRepository.updateEmailByDomainId(
-          domain.getId(), getDomainFromDomainAddress(domain.getDomainAddress()),
-          getDomainFromDomainAddress(request.getDomainAddress()));
-      log.info("modified domain on email for people. headcount -> {} ", headCount);
-    }
+    try {
+      domain.update(request);
 
-    domain.update(request);
+      if (request.getDomainAddress() != null && !request.getDomainAddress().isBlank()) {
+        int headCount = this.userRepository.updateEmailByDomainId(
+            domain.getId(), getDomainFromDomainAddress(domain.getDomainAddress()),
+            getDomainFromDomainAddress(request.getDomainAddress()));
+        log.info("modified domain on email for people. headcount -> {} ", headCount);
+      }
+    } catch (DataIntegrityViolationException e) {
+      //업데이트한 도메인이 중복되는 도메인일 경우
+      throw new AlreadyExistsDomainAddressException();
+    }
   }
 
   @Override

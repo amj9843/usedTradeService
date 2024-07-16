@@ -1,6 +1,7 @@
 package com.zerobase.used_trade.data.domain;
 
 import com.zerobase.used_trade.data.constant.Bank;
+import com.zerobase.used_trade.data.dto.AccountDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,13 +10,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@Table(name = "account")
+@Table(name = "account", uniqueConstraints = {
+    @UniqueConstraint(
+        columnNames = {"user_id", "bank", "account_number", "owner_name"}
+    )
+})
 @Entity
 public class Account extends BaseEntity {
   @Id
@@ -39,11 +45,19 @@ public class Account extends BaseEntity {
   @Column(name = "representative")
   private boolean representative;
 
-  public void update(Bank bank, String accountNumber, String ownerName, boolean representative) {
-    this.bank = bank;
-    this.accountNumber = accountNumber;
-    this.ownerName = ownerName;
-    this.representative = representative;
+  public void update(AccountDto.UpdateRequest request) {
+    if (request.getBank() != null && !request.getBank().isBlank()) {
+      this.bank = Bank.valueOf(request.getBank());
+    }
+    if (request.getAccountNumber() != null && !request.getAccountNumber().isBlank()) {
+      this.accountNumber = request.getAccountNumber();
+    }
+    if (request.getOwnerName() != null && !request.getOwnerName().isBlank()) {
+      this.ownerName = request.getOwnerName().trim();
+    }
+    if (request.isRepresentative()) {
+      this.representative = true;
+    }
   }
 
   public void changeRepresentative() {

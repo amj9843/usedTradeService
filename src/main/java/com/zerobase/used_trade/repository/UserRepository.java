@@ -11,9 +11,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>, CustomUserRepository {
-  //이메일 중복값 확인
-  boolean existsByEmail(String email);
-
   Optional<User> findByEmail(String email);
 
   @Modifying
