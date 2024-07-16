@@ -129,7 +129,7 @@ public class AccountServiceImpl implements AccountService {
       }
 
       account.update(request);
-    } finally {
+    } catch (DataIntegrityViolationException e){
       //수정한 계좌 정보가 이미 목록에 속해있는 경우
       throw new AlreadyExistsAccountException();
     }

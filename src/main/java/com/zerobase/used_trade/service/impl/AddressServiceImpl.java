@@ -94,7 +94,7 @@ public class AddressServiceImpl implements AddressService {
 
     try {
       address.update(request);
-    } finally {
+    } catch (DataIntegrityViolationException e) {
       throw new AlreadyExistsAddressException();
     }
   }

@@ -78,7 +78,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     try {
       category.update(request);
-    } finally {
+    } catch (DataIntegrityViolationException e) {
       //등록하려는 카테고리명이 중복되는 경우
       throw new AlreadyExistsCategoryException();
     }
