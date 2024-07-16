@@ -4,24 +4,31 @@ import com.zerobase.used_trade.annotation.EmptyOrNotBlank;
 import com.zerobase.used_trade.annotation.ShortString;
 import com.zerobase.used_trade.data.domain.Category;
 import jakarta.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 public class CategoryDto {
   @Data
   @Builder
+  @EqualsAndHashCode(of = {"id"})
   public static class Principle {
     private Long id;
     private String name;
     private String description;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public static Principle fromEntity(Category category) {
       return Principle.builder()
           .id(category.getId())
           .name(category.getName())
           .description(category.getDescription())
+          .createdAt(category.getCreatedAt())
+          .updatedAt(category.getUpdatedAt())
           .build();
     }
   }

@@ -4,8 +4,10 @@ import com.zerobase.used_trade.annotation.EmptyOrNotBlank;
 import com.zerobase.used_trade.annotation.ShortString;
 import com.zerobase.used_trade.annotation.ZipCode;
 import com.zerobase.used_trade.data.domain.Address;
+import com.zerobase.used_trade.data.domain.Consignment;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +24,8 @@ public class AddressDto {
     private String roadAddress;
     private String commonAddress;
     private String detail;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private boolean representative;
 
     public static Principle fromEntity(Address address) {
@@ -33,6 +37,8 @@ public class AddressDto {
           .roadAddress(address.getRoadAddress())
           .commonAddress(address.getCommonAddress())
           .detail(address.getDetail())
+          .createdAt(address.getCreatedAt())
+          .updatedAt(address.getUpdatedAt())
           .representative(address.isRepresentative())
           .build();
     }
@@ -95,5 +101,35 @@ public class AddressDto {
     private String detail;
 
     private boolean representative= false;
+  }
+
+  @Data
+  @Builder
+  public static class AddressInfo {
+    private String name;
+    private String zipCode;
+    private String roadAddress;
+    private String address;
+    private String detail;
+
+    public static AddressInfo fromEntity(Consignment consignment) {
+      return AddressInfo.builder()
+          .name(consignment.getSellerName())
+          .zipCode(consignment.getZipCode())
+          .roadAddress(consignment.getRoadAddress())
+          .address(consignment.getAddress())
+          .detail(consignment.getAddressDetail())
+          .build();
+    }
+
+    public static AddressInfo fromEntity(Address address) {
+      return AddressInfo.builder()
+          .name(address.getName())
+          .zipCode(address.getZipCode())
+          .roadAddress(address.getRoadAddress())
+          .address(address.getCommonAddress())
+          .detail(address.getDetail())
+          .build();
+    }
   }
 }

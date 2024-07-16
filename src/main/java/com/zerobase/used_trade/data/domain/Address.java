@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
     )
 })
 @Entity
-public class Address {
+public class Address extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "address_id")
