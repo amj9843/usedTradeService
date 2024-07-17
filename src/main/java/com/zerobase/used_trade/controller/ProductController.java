@@ -2,7 +2,9 @@ package com.zerobase.used_trade.controller;
 
 import com.zerobase.used_trade.data.constant.SuccessCode;
 import com.zerobase.used_trade.data.dto.ProductDto.EnrollConsignmentRequest;
+import com.zerobase.used_trade.data.dto.ProductDto.EnrollConsignmentResponse;
 import com.zerobase.used_trade.data.dto.ProductDto.EnrollDirectRequest;
+import com.zerobase.used_trade.data.dto.ProductDto.Principle;
 import com.zerobase.used_trade.data.dto.ResultDto;
 import com.zerobase.used_trade.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,9 +35,13 @@ public class ProductController {
       @RequestHeader("Authorization") Long userId,
       @RequestPart(value = "files", required = false) List<MultipartFile> images,
       @Validated @RequestPart(value = "request") EnrollDirectRequest request) {
+    Principle response = this.productService.enrollProductDirect(userId, images, request);
+
+    SuccessCode successCode = (images != null && response.getImages().size() < images.size()) ?
+        SuccessCode.PARTIAL_SUCCESS : SuccessCode.CREATED_SUCCESS;
+
     return ResponseEntity.ok(
-        ResultDto.res(SuccessCode.CREATED_SUCCESS.status(), SuccessCode.CREATED_SUCCESS.message(),
-            this.productService.enrollProductDirect(userId, images, request))
+        ResultDto.res(successCode.status(), successCode.message(), response)
     );
   }
 
@@ -48,9 +54,13 @@ public class ProductController {
       @RequestHeader("Authorization") Long userId,
       @RequestPart(value = "files", required = false) List<MultipartFile> images,
       @Validated @RequestPart(value = "request") EnrollConsignmentRequest request) {
+    EnrollConsignmentResponse response = this.productService.enrollProductConsignment(userId, images, request);
+
+    SuccessCode successCode = (images != null && response.getProductInfo().getImages().size() < images.size()) ?
+        SuccessCode.PARTIAL_SUCCESS : SuccessCode.CREATED_SUCCESS;
+
     return ResponseEntity.ok(
-        ResultDto.res(SuccessCode.CREATED_SUCCESS.status(), SuccessCode.CREATED_SUCCESS.message(),
-            this.productService.enrollProductConsignment(userId, images, request))
+        ResultDto.res(successCode.status(), successCode.message(), response)
     );
   }
 }
