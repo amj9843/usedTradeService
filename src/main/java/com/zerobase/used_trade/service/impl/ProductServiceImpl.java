@@ -146,6 +146,9 @@ public class ProductServiceImpl implements ProductService {
         uploadImages.add(ImageDto.Principle.fromEntity(image));
       } catch (Exception e){
         log.info("cannot record image about product to DB -> url: {}, productId: {} ", url, productId);
+
+        //DB 저장 실패 시 bucket에서 이미지 삭제
+        imageUploader.deleteImageByUrl(url);
       }
     });
 
