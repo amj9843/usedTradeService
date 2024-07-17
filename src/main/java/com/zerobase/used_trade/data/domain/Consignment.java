@@ -17,14 +17,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "consignment")
 @Entity
-public class Consignment {
+public class Consignment extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "consignment_id")
   private Long id;
 
-  @Column(name = "product_id")
+  @Column(name = "product_id", unique = true)
   private Long productId;
+
+  @Column(name = "seller_name")
+  private String sellerName;
 
   @Column(name = "seller_zip_code")
   private String zipCode;
@@ -44,6 +47,9 @@ public class Consignment {
 
   @Column(name = "seller_account_number")
   private String accountNumber;
+
+  @Column(name = "seller_account_owner_name")
+  private String accountOwnerName;
 
   @Column(name = "parcel_company")
   private String parcelCompany;
@@ -76,14 +82,16 @@ public class Consignment {
 
   @Builder
   public Consignment(
-      Long productId, String zipCode, String roadAddress, String address, String addressDetail,
-      Bank bank, String accountNumber) {
+      Long productId, String sellerName, String zipCode, String roadAddress, String address, String addressDetail,
+      Bank bank, String accountNumber, String accountOwnerName) {
     this.productId = productId;
+    this.sellerName = sellerName;
     this.zipCode = zipCode;
     this.roadAddress = roadAddress;
     this.address = address;
     this.addressDetail = addressDetail;
     this.bank = bank;
     this.accountNumber = accountNumber;
+    this.accountOwnerName = accountOwnerName;
   }
 }

@@ -6,8 +6,10 @@ import com.zerobase.used_trade.annotation.ShortString;
 import com.zerobase.used_trade.annotation.ValidEnum;
 import com.zerobase.used_trade.data.constant.Bank;
 import com.zerobase.used_trade.data.domain.Account;
+import com.zerobase.used_trade.data.domain.Consignment;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +24,8 @@ public class AccountDto {
     private Bank bank;
     private String accountNumber;
     private String ownerName;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private boolean representative;
 
     public static Principle fromEntity(Account account) {
@@ -32,6 +36,8 @@ public class AccountDto {
           .accountNumber(account.getAccountNumber())
           .ownerName(account.getOwnerName())
           .representative(account.isRepresentative())
+          .createdAt(account.getCreatedAt())
+          .updatedAt(account.getUpdatedAt())
           .build();
     }
   }
@@ -82,5 +88,29 @@ public class AccountDto {
     private String ownerName;
 
     private boolean representative= false;
+  }
+
+  @Data
+  @Builder
+  public static class AccountInfo{
+    private String bank;
+    private String accountNumber;
+    private String ownerName;
+
+    public static AccountInfo fromEntity(Consignment consignment) {
+      return AccountInfo.builder()
+          .bank(consignment.getBank().description())
+          .accountNumber(consignment.getAccountNumber())
+          .ownerName(consignment.getAccountOwnerName())
+          .build();
+    }
+
+    public static AccountInfo fromEntity(Account account) {
+      return AccountInfo.builder()
+          .bank(account.getBank().description())
+          .accountNumber(account.getAccountNumber())
+          .ownerName(account.getOwnerName())
+          .build();
+    }
   }
 }

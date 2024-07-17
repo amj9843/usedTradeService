@@ -32,6 +32,8 @@ public class DomainDto {
     private String detail;
     private String phoneNumber;
     private LocalDateTime endAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public static Principle fromEntity(Domain domain) {
       return Principle.builder()
@@ -45,6 +47,8 @@ public class DomainDto {
           .detail(domain.getDetail())
           .phoneNumber(domain.getPhoneNumber())
           .endAt(domain.getEndAt())
+          .createdAt(domain.getCreatedAt())
+          .updatedAt(domain.getUpdatedAt())
           .build();
     }
   }

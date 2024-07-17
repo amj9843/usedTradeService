@@ -20,7 +20,8 @@ public class SecurityConfig {
   //권한 필요 없는 페이지들
   private static final String[] AUTH_WHITELIST = {
       "/swagger-ui/**", "/swagger-ui-custom.html",
-      "/domain/**", "/user/sign-up", "/user/sign-in", "/user/detail/public/**"
+      "/domain/**", "/user/sign-up", "/user/sign-in", "/user/detail/public/**",
+      "/category", "/category/**"
   };
 
   @Bean

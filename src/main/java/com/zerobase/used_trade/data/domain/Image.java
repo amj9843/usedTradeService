@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "image")
 @Entity
-public class Image {
+public class Image extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "image_id")
@@ -26,17 +26,17 @@ public class Image {
   @Column(name = "board_id")
   private Long boardId;
 
-  @Column(name = "using")
+  @Column(name = "used")
   @Enumerated(EnumType.STRING)
-  private ImageUsing using;
+  private ImageUsing used;
 
   @Column(name = "src")
   private String src;
 
   @Builder
-  public Image(Long boardId, ImageUsing using, String src) {
+  public Image(Long boardId, ImageUsing used, String src) {
     this.boardId = boardId;
-    this.using = using;
+    this.used = used;
     this.src = src;
   }
 }

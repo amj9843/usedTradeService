@@ -9,7 +9,11 @@ public class EmployeeComparator {
   public static class NameAsc implements Comparator<Employee> {
     @Override
     public int compare(Employee o1, Employee o2) {
-      return o1.getName().compareTo(o2.getName());
+      if (!o1.getName().equals(o2.getName())) {
+        return o1.getName().compareTo(o2.getName());
+      }
+
+      return o1.getId().compareTo(o2.getId());
     }
   }
 
