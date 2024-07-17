@@ -7,8 +7,10 @@ import com.zerobase.used_trade.data.domain.Image;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class ImageDto {
   @Data
@@ -35,6 +37,8 @@ public class ImageDto {
 
   @Data
   @Builder
+  @AllArgsConstructor
+  @NoArgsConstructor
   public static class ImageInfo {
     @NotNull(message = "{validation.Entity.id.NotNull}")
     @EntityId
