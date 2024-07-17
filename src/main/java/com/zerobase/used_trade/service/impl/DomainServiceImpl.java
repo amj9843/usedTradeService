@@ -102,7 +102,11 @@ public class DomainServiceImpl implements DomainService {
     Domain domain = this.domainRepository.findById(domainId)
         .orElseThrow(NoDomainException::new);
 
-    domain.updateEndAt(type.extension(domain.getEndAt()));
+    if (domain.getEndAt().isAfter(LocalDateTime.now())) {
+      domain.updateEndAt(type.extension(domain.getEndAt()));
+    } else {
+      domain.updateEndAt(type.extension(LocalDateTime.now()));
+    }
   }
 
   @Override
