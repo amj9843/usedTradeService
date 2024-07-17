@@ -3,6 +3,8 @@ package com.zerobase.used_trade.data.domain;
 import com.zerobase.used_trade.data.constant.Quality;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,18 +23,26 @@ public class Review extends BaseEntity {
   @Column(name = "review_id")
   private Long id;
 
+  @Column(name = "product_id", unique = true)
   private Long productId;
 
+  @Column(name = "buyer_id")
   private Long buyerId;
 
+  @Column(name = "dealer_id")
   private Long dealerId;
 
+  @Column(name = "buyer_score")
   private int buyerScore;
 
+  @Column(name = "dealer_score")
   private int dealerScore;
 
+  @Column(name = "quality")
+  @Enumerated(EnumType.STRING)
   private Quality quality;
 
+  @Column(name = "content")
   private String content;
 
   public void updateBuyerScore(int buyerScore) {
