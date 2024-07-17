@@ -13,4 +13,6 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
   Optional<Address> findByUserIdAndRepresentativeTrue(Long userId);
 
   Optional<Address> findFirstByUserIdAndIdNotOrderByIdAsc(Long userId, Long addressId);
+
+  Optional<Address> findByIdAndUserId(Long addressId, Long userId);
 }

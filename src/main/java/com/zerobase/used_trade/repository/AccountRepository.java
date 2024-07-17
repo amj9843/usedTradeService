@@ -13,4 +13,8 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
   Optional<Account> findByUserIdAndRepresentativeTrue(Long userId);
 
   Optional<Account> findFirstByUserIdAndIdNotOrderByIdAsc(Long userId, Long accountId);
+
+  Optional<Account> findByIdAndUserId(Long accountId, Long userId);
+
+  boolean existsByUserId(Long userId);
 }
