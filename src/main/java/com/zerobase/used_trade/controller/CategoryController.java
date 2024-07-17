@@ -9,6 +9,7 @@ import com.zerobase.used_trade.data.dto.CategoryDto.UpdateRequest;
 import com.zerobase.used_trade.data.dto.ResultDto;
 import com.zerobase.used_trade.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -90,6 +91,36 @@ public class CategoryController {
       @PathVariable("categoryId") Long categoryId
   ) {
     this.categoryService.deleteCategory(userId, categoryId);
+
+    return ResponseEntity.ok(
+        ResultDto.res(SuccessCode.DELETED_SUCCESS.status(), SuccessCode.DELETED_SUCCESS.message())
+    );
+  }
+  
+  @Operation(summary = "카테고리별 상품 등록")
+  @PostMapping("/match-products/{categoryId}")
+  public ResponseEntity<?> enrollProductsOnCategory(
+      //TODO JWT 사용이후는 @AuthenticationPrincipal 이용, CustomUserDetails 가져옴
+      @RequestHeader("Authorization") Long userId,
+      @PathVariable("categoryId") Long categoryId,
+      @RequestBody Set<Long> productIdList
+  ) {
+    this.categoryService.enrollProductsOnCategory(userId, categoryId, productIdList);
+
+    return ResponseEntity.ok(
+        ResultDto.res(SuccessCode.CREATED_SUCCESS.status(), SuccessCode.CREATED_SUCCESS.message())
+    );
+  }
+
+  @Operation(summary = "카테고리별 상품 삭제")
+  @DeleteMapping("/match-products/{categoryId}")
+  public ResponseEntity<?> deleteProductsOnCategory(
+      //TODO JWT 사용이후는 @AuthenticationPrincipal 이용, CustomUserDetails 가져옴
+      @RequestHeader("Authorization") Long userId,
+      @PathVariable("categoryId") Long categoryId,
+      @RequestBody Set<Long> productIdList
+  ) {
+    this.categoryService.deleteProductsOnCategory(userId, categoryId, productIdList);
 
     return ResponseEntity.ok(
         ResultDto.res(SuccessCode.DELETED_SUCCESS.status(), SuccessCode.DELETED_SUCCESS.message())
