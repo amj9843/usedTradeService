@@ -33,7 +33,15 @@ public enum ExceptionCode implements CodeAware {
   CANNOT_USE_BEFORE_ENROLL_ACCOUNT(HttpStatus.CONFLICT, "계좌 정보를 등록하지 않고 이용할 수 없습니다."),
   CANNOT_USE_BEFORE_ENROLL_ADDRESS(HttpStatus.CONFLICT, "주소 정보를 등록하지 않고 이용할 수 없습니다."),
   NO_MATCH_ACCOUNT_AND_USER(HttpStatus.CONFLICT, "사용자가 등록한 계좌 정보 중 입력한 계좌 식별번호와 일치하는 것이 없습니다."),
-  NO_MATCH_ADDRESS_AND_USER(HttpStatus.CONFLICT, "사용자가 등록한 주소 정보 중 입력한 주소 식별번호와 일치하는 것이 없습니다.");
+  NO_MATCH_ADDRESS_AND_USER(HttpStatus.CONFLICT, "사용자가 등록한 주소 정보 중 입력한 주소 식별번호와 일치하는 것이 없습니다."),
+  CANNOT_UPLOAD_ONLY_IMAGES_OF_REPORT(HttpStatus.FORBIDDEN, "건의/신고는 등록 후 수정할 수 없습니다."),
+  ALREADY_COMPLETED(HttpStatus.CONFLICT, "이미 완료된 항목엔 요청을 처리할 수 없습니다."),
+  NO_REPORT(HttpStatus.NOT_FOUND, "식별번호에 해당하는 신고/건의사항이 없습니다."),
+  CANNOT_REPORT_SELF_EXCEPTION(HttpStatus.BAD_REQUEST, "자기 자신은 신고할 수 없습니다."),
+  CANNOT_CHANGE_ROLE(HttpStatus.CONFLICT, "권한을 바꿀 수 있는 대상이 아닙니다."),
+  NO_PRODUCT(HttpStatus.CONFLICT, "식별번호에 해당하는 상품이 없습니다."),
+  NO_DEAL_METHOD(HttpStatus.CONFLICT, "식별번호에 해당하는 거래 방식이 없습니다."),
+  CANNOT_DELETE_DEAL_METHOD(HttpStatus.FORBIDDEN, "해당 거래 방식으로 신청중이거나 진행중인 거래가 있으면 거래 방식 삭제가 불가합니다.");
 
   private final HttpStatus status;
   private final String message;
