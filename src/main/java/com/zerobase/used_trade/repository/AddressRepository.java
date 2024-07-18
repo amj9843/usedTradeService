@@ -4,7 +4,9 @@ import com.zerobase.used_trade.data.domain.Address;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
   Long countByUserId(Long userId);
 
@@ -13,4 +15,6 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
   Optional<Address> findByUserIdAndRepresentativeTrue(Long userId);
 
   Optional<Address> findFirstByUserIdAndIdNotOrderByIdAsc(Long userId, Long addressId);
+
+  Optional<Address> findByIdAndUserId(Long addressId, Long userId);
 }
