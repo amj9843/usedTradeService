@@ -1,5 +1,6 @@
 package com.zerobase.used_trade.data.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.zerobase.used_trade.annotation.EntityId;
 import com.zerobase.used_trade.annotation.ValidEnum;
 import com.zerobase.used_trade.data.constant.ImageUsing;
@@ -32,6 +33,17 @@ public class ImageDto {
           .createdAt(image.getCreatedAt())
           .updatedAt(image.getUpdatedAt())
           .build();
+    }
+
+    @QueryProjection
+    public Principle(Long id, Long boardId, ImageUsing used, String src,
+        LocalDateTime createdAt, LocalDateTime updatedAt) {
+      this.id = id;
+      this.boardId = boardId;
+      this.used = used;
+      this.src = src;
+      this.createdAt = createdAt;
+      this.updatedAt = updatedAt;
     }
   }
 
