@@ -1,5 +1,7 @@
 package com.zerobase.used_trade.data.constant;
 
+import static java.lang.String.format;
+
 import com.zerobase.used_trade.component.SpecificationBuilder;
 import com.zerobase.used_trade.data.constant.aware.DescriptionAware;
 import com.zerobase.used_trade.data.constant.aware.FilterTypeAware;
@@ -31,5 +33,10 @@ public enum DomainFilterType implements DescriptionAware, FilterTypeAware<Domain
   @Override
   public Specification<Domain> processing(Specification<Domain> spec) {
     return this.function.apply(spec);
+  }
+
+  @Override
+  public String toString() {
+    return format("%s(%s)", this.name(), this.description);
   }
 }
