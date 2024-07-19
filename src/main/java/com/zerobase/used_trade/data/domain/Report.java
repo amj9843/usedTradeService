@@ -28,8 +28,8 @@ public class Report extends BaseEntity {
   @Column(name = "reporter_id")
   private Long reporterId;
 
-  @Column(name = "reported_id")
-  private Long reportedId;
+  @Column(name = "reported_user_id")
+  private Long reportedUserId;
 
   @Column(name = "type")
   @Enumerated(EnumType.STRING)
@@ -57,9 +57,9 @@ public class Report extends BaseEntity {
   }
 
   @Builder
-  public Report(Long reporterId, Long reportedId, ReportType type, String title, String content, ReportStatus status) {
+  public Report(Long reporterId, Long reportedUserId, ReportType type, String title, String content, ReportStatus status) {
     this.reporterId = reporterId;
-    this.reportedId = reportedId;
+    this.reportedUserId = reportedUserId;
     this.type = type;
     this.title = title;
     this.content = content;
