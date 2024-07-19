@@ -2,9 +2,9 @@ package com.zerobase.used_trade.controller;
 
 import com.zerobase.used_trade.data.constant.SuccessCode;
 import com.zerobase.used_trade.data.constant.UserRole;
-import com.zerobase.used_trade.data.domain.User;
 import com.zerobase.used_trade.data.dto.ResultDto;
 import com.zerobase.used_trade.data.dto.UserDto;
+import com.zerobase.used_trade.data.dto.UserDto.Principle;
 import com.zerobase.used_trade.exception.impl.NoAuthorizeException;
 import com.zerobase.used_trade.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,7 +62,7 @@ public class UserController {
       //TODO JWT 사용이후는 @AuthenticationPrincipal 이용, CustomUserDetails 가져옴
       @RequestHeader("Authorization") Long adminId,
       @PathVariable("userId") Long userId) {
-    User user = this.userService.findUserById(adminId);
+    Principle user = this.userService.findUserById(adminId);
     if (user.getRole() != UserRole.ADMIN) {
       throw new NoAuthorizeException();
     }
@@ -80,7 +80,7 @@ public class UserController {
       //TODO JWT 사용이후는 @AuthenticationPrincipal 이용, CustomUserDetails 가져옴
       @RequestHeader("Authorization") Long adminId,
       @PathVariable("userId") Long userId) {
-    User user = this.userService.findUserById(adminId);
+    Principle user = this.userService.findUserById(adminId);
     if (user.getRole() != UserRole.ADMIN) {
       throw new NoAuthorizeException();
     }

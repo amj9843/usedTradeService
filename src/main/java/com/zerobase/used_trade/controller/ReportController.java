@@ -6,11 +6,11 @@ import com.zerobase.used_trade.data.constant.ReportStatusFilterType;
 import com.zerobase.used_trade.data.constant.ReportTypeFilterType;
 import com.zerobase.used_trade.data.constant.SuccessCode;
 import com.zerobase.used_trade.data.constant.UserRole;
-import com.zerobase.used_trade.data.domain.User;
 import com.zerobase.used_trade.data.dto.ReportDto.AnswerRequest;
 import com.zerobase.used_trade.data.dto.ReportDto.EnrollRequest;
 import com.zerobase.used_trade.data.dto.ReportDto.Principle;
 import com.zerobase.used_trade.data.dto.ResultDto;
+import com.zerobase.used_trade.data.dto.UserDto;
 import com.zerobase.used_trade.exception.impl.NoAuthorizeException;
 import com.zerobase.used_trade.service.ReportService;
 import com.zerobase.used_trade.service.UserService;
@@ -65,7 +65,7 @@ public class ReportController {
       @RequestHeader("Authorization") Long userId,
       @PathVariable("reportId") Long reportId,
       @Validated @RequestBody AnswerRequest request) {
-    User user = this.userService.findUserById(userId);
+    UserDto.Principle user = this.userService.findUserById(userId);
     if (user.getRole() != UserRole.ADMIN) {
       throw new NoAuthorizeException();
     }
