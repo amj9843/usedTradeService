@@ -62,6 +62,10 @@ public class User extends BaseEntity {
     }
   }
 
+  public void changeRole(UserRole role) {
+    this.role = role;
+  }
+
   @Builder
   public User(Long domainId, String email, String password,
       String name, String nickName, String phoneNumber, UserRole role) {
