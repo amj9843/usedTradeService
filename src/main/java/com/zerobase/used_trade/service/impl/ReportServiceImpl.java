@@ -59,13 +59,13 @@ public class ReportServiceImpl implements ReportService {
       throw new NoAuthorizeException();
     }
 
-    if (request.getReportedId() != null && userId.equals(request.getReportedId())) {
+    if (request.getReportedUserId() != null && userId.equals(request.getReportedUserId())) {
       throw new CannotReportSelfException();
     }
 
-    if (request.getReportedId() != null) {
+    if (request.getReportedUserId() != null) {
       //신고할 사용자가 있는 경우 존재하는 회원인지 검색
-      this.userRepository.findById(request.getReportedId()).orElseThrow(NoUserException::new);
+      this.userRepository.findById(request.getReportedUserId()).orElseThrow(NoUserException::new);
     }
 
     if (images != null && images.size() > REPORT_MAX_IMG) {
@@ -83,13 +83,7 @@ public class ReportServiceImpl implements ReportService {
 
   @Override
   @Transactional
-  public void enrollAnswer(Long reportId, Long userId, AnswerRequest request) {
-    User user = this.userRepository.findById(userId).orElseThrow(NoUserException::new);
-    //관리인만 실행 가능
-    if (user.getRole() != UserRole.ADMIN) {
-      throw new NoAuthorizeException();
-    }
-
+  public void enrollAnswer(Long reportId, AnswerRequest request) {
     Report report = this.reportRepository.findById(reportId).orElseThrow(NoReportException::new);
     if (report.getStatus() == ReportStatus.COMPLETED) {
       //이미 처리완료된 항목일 경우 답변 등록 불가

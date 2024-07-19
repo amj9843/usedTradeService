@@ -34,7 +34,7 @@ public class CustomReportRepositoryImpl implements CustomReportRepository {
   public List<SimpleInfoResponse> findAllOfSimple(Long userId, ReportTypeFilterType typeFilter, ReportStatusFilterType statusFilter) {
     List<SimpleInfoResponse> allList = jpaQueryFactory
         .select(new QReportDto_SimpleInfoResponse(
-            report.id, report.reporterId, report.reportedId,
+            report.id, report.reporterId, report.reportedUserId,
             report.type, report.title, report.status, report.createdAt, report.updatedAt
         ))
         .from(report)
@@ -54,7 +54,7 @@ public class CustomReportRepositoryImpl implements CustomReportRepository {
             statusFilter(statusFilter)
         )
         .transform(groupBy(report.id).as(new QReportDto_SimpleInfoResponse(
-            report.id, report.reporterId, report.reportedId,
+            report.id, report.reporterId, report.reportedUserId,
             list(new QImageDto_Principle(
                     image.id, image.boardId, image.used, image.src, image.createdAt, image.updatedAt)
             ), report.type, report.title, report.status, report.createdAt, report.updatedAt

@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ReportService {
   Principle enrollReport(Long userId, List<MultipartFile> images, EnrollRequest request);
 
-  void enrollAnswer(Long reportId, Long userId, AnswerRequest request);
+  void enrollAnswer(Long reportId, AnswerRequest request);
 
   Page<SimpleInfoResponse> getReportList(Long userId, int page, int size,
       ReportTypeFilterType typeFilter, ReportStatusFilterType statusFilter, ReportSortType sort);

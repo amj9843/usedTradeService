@@ -23,7 +23,7 @@ public class ReportDto {
   public static class Principle {
     private Long id;
     private Long reporterId;
-    private Long reportedId;
+    private Long reportedUserId;
     private List<ImageDto.Principle> images;
     private ReportType type;
     private String title;
@@ -37,7 +37,7 @@ public class ReportDto {
       return Principle.builder()
           .id(report.getId())
           .reporterId(report.getReporterId())
-          .reportedId(report.getReportedId())
+          .reportedUserId(report.getReportedUserId())
           .images(images)
           .type(report.getType())
           .title(report.getTitle())
@@ -54,8 +54,8 @@ public class ReportDto {
   @AllArgsConstructor
   @NoArgsConstructor
   public static class EnrollRequest {
-    @EntityId(message = "{validation.Report.reportedId}")
-    private Long reportedId;
+    @EntityId(message = "{validation.Report.reportedUserId}")
+    private Long reportedUserId;
 
     @NotEmpty(message = "{validation.Report.type.NotEmpty}")
     @ValidEnum(enumClass = ReportType.class)
@@ -70,7 +70,7 @@ public class ReportDto {
     public Report toEntity(Long userId) {
       return Report.builder()
           .reporterId(userId)
-          .reportedId(this.reportedId)
+          .reportedUserId(this.reportedUserId)
           .type(ReportType.valueOf(this.type))
           .title(this.title)
           .content(this.content)
@@ -93,7 +93,7 @@ public class ReportDto {
   public static class SimpleInfoResponse{
     private Long reportId;
     private Long reporterId;
-    private Long reportedId;
+    private Long reportedUserId;
     private List<ImageDto.Principle> images;
     private ReportType type;
     private String title;
@@ -102,12 +102,12 @@ public class ReportDto {
     private LocalDateTime updatedAt;
 
     @QueryProjection
-    public SimpleInfoResponse(Long reportId, Long reporterId, Long reportedId,
+    public SimpleInfoResponse(Long reportId, Long reporterId, Long reportedUserId,
         List<ImageDto.Principle> images, ReportType type, String title, ReportStatus status,
         LocalDateTime createdAt, LocalDateTime updatedAt) {
       this.reportId = reportId;
       this.reporterId = reporterId;
-      this.reportedId = reportedId;
+      this.reportedUserId = reportedUserId;
       this.images = images;
       this.type = type;
       this.title = title;
@@ -117,11 +117,11 @@ public class ReportDto {
     }
 
     @QueryProjection
-    public SimpleInfoResponse(Long reportId, Long reporterId, Long reportedId,
+    public SimpleInfoResponse(Long reportId, Long reporterId, Long reportedUserId,
         ReportType type, String title, ReportStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
       this.reportId = reportId;
       this.reporterId = reporterId;
-      this.reportedId = reportedId;
+      this.reportedUserId = reportedUserId;
       this.type = type;
       this.title = title;
       this.status = status;

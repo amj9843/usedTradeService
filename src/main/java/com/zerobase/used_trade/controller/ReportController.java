@@ -5,11 +5,15 @@ import com.zerobase.used_trade.data.constant.ReportSortType;
 import com.zerobase.used_trade.data.constant.ReportStatusFilterType;
 import com.zerobase.used_trade.data.constant.ReportTypeFilterType;
 import com.zerobase.used_trade.data.constant.SuccessCode;
+import com.zerobase.used_trade.data.constant.UserRole;
+import com.zerobase.used_trade.data.domain.User;
 import com.zerobase.used_trade.data.dto.ReportDto.AnswerRequest;
 import com.zerobase.used_trade.data.dto.ReportDto.EnrollRequest;
 import com.zerobase.used_trade.data.dto.ReportDto.Principle;
 import com.zerobase.used_trade.data.dto.ResultDto;
+import com.zerobase.used_trade.exception.impl.NoAuthorizeException;
 import com.zerobase.used_trade.service.ReportService;
+import com.zerobase.used_trade.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/report")
 public class ReportController {
   private final ReportService reportService;
+  private final UserService userService;
 
   //신고/건의 등록
   @Operation(summary = "신고/건의 등록")
@@ -60,7 +65,12 @@ public class ReportController {
       @RequestHeader("Authorization") Long userId,
       @PathVariable("reportId") Long reportId,
       @Validated @RequestBody AnswerRequest request) {
-    this.reportService.enrollAnswer(reportId, userId, request);
+    User user = this.userService.findUserById(userId);
+    if (user.getRole() != UserRole.ADMIN) {
+      throw new NoAuthorizeException();
+    }
+
+    this.reportService.enrollAnswer(reportId, request);
 
     return ResponseEntity.ok(
         ResultDto.res(SuccessCode.ANSWERED_SUCCESS.status(), SuccessCode.ANSWERED_SUCCESS.message())
