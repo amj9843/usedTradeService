@@ -128,12 +128,11 @@ public class DealMethodServiceImpl implements DealMethodService {
     List<DealMethod> dealMethods = this.dealMethodRepository.findAllByProductIdPossible(productId);
 
     dealMethods.forEach(method-> {
-      if (method.getType() == DealMethodType.PARCEL) {
-        response.setParcel(ParcelMethod.fromEntity(method));
-      } else if (method.getType() == DealMethodType.CONVENIENCE) {
-        response.setConvenience(ConvenienceMethod.formEntity(method));
-      } else if (method.getType() == DealMethodType.MEETING) {
-        response.getMeeting().add(MeetingMethod.fromEntity(method));
+      switch (method.getType()) {
+        case PARCEL -> response.setParcel(ParcelMethod.fromEntity(method));
+        case CONVENIENCE -> response.setConvenience(ConvenienceMethod.formEntity(method));
+        case MEETING -> response.getMeeting().add(MeetingMethod.fromEntity(method));
+        default -> throw new RuntimeException();
       }
     });
 
