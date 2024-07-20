@@ -1,14 +1,18 @@
 package com.zerobase.used_trade.controller;
 
 import com.zerobase.used_trade.data.constant.SuccessCode;
+import com.zerobase.used_trade.data.constant.UserRole;
 import com.zerobase.used_trade.data.dto.ResultDto;
 import com.zerobase.used_trade.data.dto.UserDto;
+import com.zerobase.used_trade.data.dto.UserDto.Principle;
+import com.zerobase.used_trade.exception.impl.NoAuthorizeException;
 import com.zerobase.used_trade.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -52,11 +56,41 @@ public class UserController {
     );
   }
 
-  /*
-  TODO 회원 권한 변경
   @Operation(summary = "관리자의 사용자 권한 변경(일반 사용자 > 거래 불가자)")
   @PatchMapping("/denied/{userId}")
-   */
+  public ResponseEntity<?> updateUserRoleToDenied(
+      //TODO JWT 사용이후는 @AuthenticationPrincipal 이용, CustomUserDetails 가져옴
+      @RequestHeader("Authorization") Long adminId,
+      @PathVariable("userId") Long userId) {
+    Principle user = this.userService.findUserById(adminId);
+    if (user.getRole() != UserRole.ADMIN) {
+      throw new NoAuthorizeException();
+    }
+
+    this.userService.updateUserRole(userId, UserRole.USER, UserRole.DENIED);
+
+    return ResponseEntity.ok(
+        ResultDto.res(SuccessCode.UPDATED_SUCCESS.status(), SuccessCode.UPDATED_SUCCESS.message())
+    );
+  }
+
+  @Operation(summary = "관리자의 사용자 권한 변경(거래 불가자 > 일반 사용자)")
+  @PatchMapping("/common/{userId}")
+  public ResponseEntity<?> updateUserRoleToUser(
+      //TODO JWT 사용이후는 @AuthenticationPrincipal 이용, CustomUserDetails 가져옴
+      @RequestHeader("Authorization") Long adminId,
+      @PathVariable("userId") Long userId) {
+    Principle user = this.userService.findUserById(adminId);
+    if (user.getRole() != UserRole.ADMIN) {
+      throw new NoAuthorizeException();
+    }
+
+    this.userService.updateUserRole(userId, UserRole.DENIED, UserRole.USER);
+
+    return ResponseEntity.ok(
+        ResultDto.res(SuccessCode.UPDATED_SUCCESS.status(), SuccessCode.UPDATED_SUCCESS.message())
+    );
+  }
 
   /*
   TODO 회원 탈퇴

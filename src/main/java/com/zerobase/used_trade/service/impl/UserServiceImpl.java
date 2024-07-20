@@ -10,6 +10,7 @@ import com.zerobase.used_trade.data.dto.UserDto.SignInResponse;
 import com.zerobase.used_trade.data.dto.UserDto.SignUpRequest;
 import com.zerobase.used_trade.data.dto.UserDto.UpdateRequest;
 import com.zerobase.used_trade.exception.impl.AlreadyExistsEmailException;
+import com.zerobase.used_trade.exception.impl.CannotChangeRoleException;
 import com.zerobase.used_trade.exception.impl.ExpiredDomainException;
 import com.zerobase.used_trade.exception.impl.IncorrectPasswordOnConfirmException;
 import com.zerobase.used_trade.exception.impl.IncorrectPasswordOnSignInException;
@@ -32,6 +33,13 @@ public class UserServiceImpl implements UserService {
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
   private final DomainRepository domainRepository;
+
+  @Override
+  @Transactional(readOnly = true)
+  public Principle findUserById(Long userId) {
+    return Principle.fromEntity(
+        this.userRepository.findById(userId).orElseThrow(NoUserException::new));
+  }
 
   @Override
   @Transactional
@@ -96,5 +104,16 @@ public class UserServiceImpl implements UserService {
 
     request.setPassword(this.passwordEncoder.encode(request.getPassword()));
     user.update(request);
+  }
+
+  @Override
+  @Transactional
+  public void updateUserRole(Long userId, UserRole nowRole, UserRole changeRole) {
+    User user = this.userRepository.findById(userId).orElseThrow(NoUserException::new);
+    if (user.getRole() != nowRole) {
+      throw new CannotChangeRoleException();
+    }
+
+    user.changeRole(changeRole);
   }
 }

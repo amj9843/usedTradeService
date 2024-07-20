@@ -10,7 +10,8 @@ public enum SuccessCode implements CodeAware {
   EXTEND_PERIOD_SUCCESS(HttpStatus.NO_CONTENT, "만료일을 연장했습니다."),
   DELETED_SUCCESS(HttpStatus.NO_CONTENT, "요청 정보가 성공적으로 삭제되었습니다."),
   SIGN_IN_SUCCESS(HttpStatus.OK, "성공적으로 로그인했습니다."),
-  PARTIAL_SUCCESS(HttpStatus.PARTIAL_CONTENT, "요청 정보를 부분적으로 성공했습니다.");
+  PARTIAL_SUCCESS(HttpStatus.PARTIAL_CONTENT, "요청 정보를 부분적으로 성공했습니다."),
+  ANSWERED_SUCCESS(HttpStatus.NO_CONTENT, "답변을 성공적으로 등록했습니다.");
 
   private final HttpStatus status;
   private final String message;

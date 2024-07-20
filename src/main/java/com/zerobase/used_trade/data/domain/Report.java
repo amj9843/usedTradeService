@@ -2,6 +2,7 @@ package com.zerobase.used_trade.data.domain;
 
 import com.zerobase.used_trade.data.constant.ReportStatus;
 import com.zerobase.used_trade.data.constant.ReportType;
+import com.zerobase.used_trade.data.dto.ReportDto.AnswerRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,11 +28,15 @@ public class Report extends BaseEntity {
   @Column(name = "reporter_id")
   private Long reporterId;
 
-  @Column(name = "reported_id")
-  private Long reportedId;
+  @Column(name = "reported_user_id")
+  private Long reportedUserId;
 
   @Column(name = "type")
+  @Enumerated(EnumType.STRING)
   private ReportType type;
+
+  @Column(name = "title")
+  private String title;
 
   @Column(name = "content")
   private String content;
@@ -44,16 +49,19 @@ public class Report extends BaseEntity {
   private ReportStatus status;
 
   public void updateAnswer(
-      String answer) {
-    this.answer = answer;
+      AnswerRequest request) {
+    if (request.getAnswer() != null && !request.getAnswer().isBlank()) {
+      this.answer = request.getAnswer();
+    }
     this.status = ReportStatus.COMPLETED;
   }
 
   @Builder
-  public Report(Long reporterId, Long reporteeId, ReportType type, String content, ReportStatus status) {
+  public Report(Long reporterId, Long reportedUserId, ReportType type, String title, String content, ReportStatus status) {
     this.reporterId = reporterId;
-    this.reportedId = reporteeId;
+    this.reportedUserId = reportedUserId;
     this.type = type;
+    this.title = title;
     this.content = content;
     this.status = status;
   }
