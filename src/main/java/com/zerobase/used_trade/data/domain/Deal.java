@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@Table(name = "deal_method")
+@Table(name = "deal", uniqueConstraints = {
+    @UniqueConstraint(
+        columnNames = {"buyer_id", "detail_id"}
+    )
+})
 @Entity
 public class Deal extends BaseEntity {
   @Id
@@ -42,11 +47,14 @@ public class Deal extends BaseEntity {
   @Column(name = "account_number")
   private String accountNumber;
 
+  @Column(name = "account_owner_name")
+  private String accountOwnerName;
+
   @Column(name = "depositor_name")
   private String depositorName;
 
   @Column(name = "deposited_at")
-  private LocalDateTime deposited_at;
+  private LocalDateTime depositedAt;
 
   @Column(name = "deposit_price")
   private Long depositPrice;
@@ -57,6 +65,9 @@ public class Deal extends BaseEntity {
 
   @Column(name = "refund_account_number")
   private String refundAccountNumber;
+
+  @Column(name = "refund_account_owner_name")
+  private String refundAccountOwnerName;
 
   @Column(name = "buyer_zip_code")
   private String buyerZipCode;
@@ -94,11 +105,11 @@ public class Deal extends BaseEntity {
 
   public void updateDepositInfo(
       Bank bank, String accountNumber,
-      String depositorName, LocalDateTime deposited_at, Long depositPrice) {
+      String depositorName, LocalDateTime depositedAt, Long depositPrice) {
     this.bank = bank;
     this.accountNumber = accountNumber;
     this.depositorName = depositorName;
-    this.deposited_at = deposited_at;
+    this.depositedAt = depositedAt;
     this.depositPrice = depositPrice;
     this.status = DealStatus.DEPOSITED;
   }
@@ -118,21 +129,47 @@ public class Deal extends BaseEntity {
 
   @Builder
   public Deal(
+      //구매신청 회원 정보
       Long buyerId, Long detailId, DealStatus status,
-      Bank refundBank, String refundAccountNumber,
+      //입금계좌정보
+      Bank bank, String accountNumber, String accountOwnerName,
+      //입금자 정보
+      String depositorName, LocalDateTime depositedAt, Long depositPrice,
+      //환불계좌정보
+      Bank refundBank, String refundAccountNumber, String refundAccountOwnerName,
+      //구매자 수령정보
       String buyerName, String buyerPhoneNumber, String convenienceStore,
-      String buyerZipCode, String buyerRoadAddress, String buyerAddress, String buyerAddressDetail) {
+      String buyerZipCode, String buyerRoadAddress, String buyerAddress, String buyerAddressDetail,
+      //발송자(담당자) 발송 정보
+      String dealerName, String parcelCompany, String invoiceNumber) {
     this.buyerId = buyerId;
     this.detailId = detailId;
     this.status = status;
+
+    this.bank = bank;
+    this.accountNumber = accountNumber;
+    this.accountOwnerName = accountOwnerName;
+    this.depositorName = depositorName;
+    this.depositedAt = depositedAt;
+    this.depositPrice = depositPrice;
+
     this.refundBank = refundBank;
     this.refundAccountNumber = refundAccountNumber;
+    this.refundAccountOwnerName = refundAccountOwnerName;
+
     this.buyerName = buyerName;
     this.buyerPhoneNumber = buyerPhoneNumber;
+
     this.convenienceStore = convenienceStore;
+
     this.buyerZipCode = buyerZipCode;
     this.buyerRoadAddress = buyerRoadAddress;
     this.buyerAddress = buyerAddress;
     this.buyerAddressDetail = buyerAddressDetail;
+
+    this.dealerName = dealerName;
+
+    this.parcelCompany = parcelCompany;
+    this.invoiceNumber = invoiceNumber;
   }
 }
