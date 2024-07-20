@@ -47,6 +47,9 @@ public class Deal extends BaseEntity {
   @Column(name = "account_number")
   private String accountNumber;
 
+  @Column(name = "account_owner_name")
+  private String accountOwnerName;
+
   @Column(name = "depositor_name")
   private String depositorName;
 
@@ -102,11 +105,11 @@ public class Deal extends BaseEntity {
 
   public void updateDepositInfo(
       Bank bank, String accountNumber,
-      String depositorName, LocalDateTime deposited_at, Long depositPrice) {
+      String depositorName, LocalDateTime depositedAt, Long depositPrice) {
     this.bank = bank;
     this.accountNumber = accountNumber;
     this.depositorName = depositorName;
-    this.depositedAt = deposited_at;
+    this.depositedAt = depositedAt;
     this.depositPrice = depositPrice;
     this.status = DealStatus.DEPOSITED;
   }
@@ -129,7 +132,9 @@ public class Deal extends BaseEntity {
       //구매신청 회원 정보
       Long buyerId, Long detailId, DealStatus status,
       //입금계좌정보
-      Bank bank, String accountNumber, String depositorName, LocalDateTime depositedAt, Long depositPrice,
+      Bank bank, String accountNumber, String accountOwnerName,
+      //입금자 정보
+      String depositorName, LocalDateTime depositedAt, Long depositPrice,
       //환불계좌정보
       Bank refundBank, String refundAccountNumber, String refundAccountOwnerName,
       //구매자 수령정보
@@ -143,6 +148,7 @@ public class Deal extends BaseEntity {
 
     this.bank = bank;
     this.accountNumber = accountNumber;
+    this.accountOwnerName = accountOwnerName;
     this.depositorName = depositorName;
     this.depositedAt = depositedAt;
     this.depositPrice = depositPrice;
