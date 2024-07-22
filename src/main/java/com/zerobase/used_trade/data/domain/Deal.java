@@ -1,7 +1,12 @@
 package com.zerobase.used_trade.data.domain;
 
+import static com.zerobase.used_trade.util.DateTimeUtility.stringToLocalDateTime;
+
 import com.zerobase.used_trade.data.constant.Bank;
 import com.zerobase.used_trade.data.constant.DealStatus;
+import com.zerobase.used_trade.data.dto.DealDto.EnrollAndUpdateRequest;
+import com.zerobase.used_trade.data.dto.DealDto.UpdateDepositInfoRequest;
+import com.zerobase.used_trade.data.dto.DealDto.UpdateShippingInfoRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -104,27 +109,87 @@ public class Deal extends BaseEntity {
   }
 
   public void updateDepositInfo(
-      Bank bank, String accountNumber,
-      String depositorName, LocalDateTime depositedAt, Long depositPrice) {
-    this.bank = bank;
-    this.accountNumber = accountNumber;
-    this.depositorName = depositorName;
-    this.depositedAt = depositedAt;
-    this.depositPrice = depositPrice;
-    this.status = DealStatus.DEPOSITED;
+      Account account, UpdateDepositInfoRequest request) {
+    if (account != null) {
+      this.bank = account.getBank();
+      this.accountNumber = account.getAccountNumber();
+      this.accountOwnerName = account.getOwnerName();
+    }
+    if (request.getName() != null && !request.getName().isEmpty()) {
+      this.depositorName = request.getName().trim();
+    }
+    if (request.getDepositedAt() != null && !request.getDepositedAt().isBlank()) {
+      this.depositedAt = stringToLocalDateTime(request.getDepositedAt());
+    }
+    if (request.getDepositPrice() != null && request.getDepositPrice() >= 0) {
+      this.depositPrice = request.getDepositPrice();
+    }
+
+    if (this.status != DealStatus.DEPOSITED) {
+      this.status = DealStatus.DEPOSITED;
+    }
   }
 
-  public void updateParcelInfo(String dealerName, String parcelCompany, String invoiceNumber) {
-    this.dealerName = dealerName;
-    this.parcelCompany = parcelCompany;
-    this.invoiceNumber = invoiceNumber;
-    this.status = DealStatus.SHIPPING;
+  public void updateShippingInfo(UpdateShippingInfoRequest request) {
+    if (request.getDealerName() != null && !request.getDealerName().isBlank()) {
+      this.dealerName = request.getDealerName().trim();
+    }
+    if (request.getParcelCompany() != null && !request.getParcelCompany().isBlank()) {
+      this.parcelCompany = request.getParcelCompany();
+    }
+    if (request.getInvoiceNumber() != null && !request.getInvoiceNumber().isBlank()) {
+      this.invoiceNumber = request.getInvoiceNumber();
+    }
+
+    if (this.status != DealStatus.SHIPPING) {
+      this.status = DealStatus.SHIPPING;
+    }
   }
 
-  public void updateInvoiceInfo(String dealerName, String invoiceNumber) {
-    this.dealerName = dealerName;
-    this.invoiceNumber = invoiceNumber;
-    this.status = DealStatus.SHIPPING;
+  public void updateBuyerInfoParcel(Account account, Address address, String buyerPhoneNumber) {
+    if (account != null) {
+      this.refundBank = account.getBank();
+      this.refundAccountNumber = account.getAccountNumber();
+      this.refundAccountOwnerName = account.getOwnerName();
+    }
+
+    if (address != null) {
+      this.buyerName = address.getName();
+      this.buyerZipCode = address.getZipCode();
+      this.buyerRoadAddress = address.getRoadAddress();
+      this.buyerAddress = address.getCommonAddress();
+      this.buyerAddressDetail = address.getDetail();
+    }
+
+    if (buyerPhoneNumber != null && !buyerPhoneNumber.isBlank()) {
+      this.buyerPhoneNumber = buyerPhoneNumber;
+    }
+  }
+
+  public void updateBuyerInfoConvenience(Account account, EnrollAndUpdateRequest request) {
+    if (account != null) {
+      this.refundBank = account.getBank();
+      this.refundAccountNumber = account.getAccountNumber();
+      this.refundAccountOwnerName = account.getOwnerName();
+    }
+
+    if (request.getName() != null && !request.getName().isBlank()) {
+      this.buyerName = request.getName().trim();
+    }
+
+    if (request.getConvenienceStore() != null && !request.getConvenienceStore().isBlank()) {
+      this.convenienceStore = request.getConvenienceStore();
+    }
+
+    if (request.getPhoneNumber() != null && !request.getPhoneNumber().isBlank()) {
+      this.buyerPhoneNumber = request.getPhoneNumber();
+    }
+  }
+
+  public void updateBuyerInfoMeeting(EnrollAndUpdateRequest request) {
+    if (request.getPhoneNumber() != null && !request.getPhoneNumber().isBlank()) {
+      this.buyerPhoneNumber = request.getPhoneNumber();
+    }
   }
 
   @Builder
