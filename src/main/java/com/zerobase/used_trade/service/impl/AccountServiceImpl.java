@@ -1,5 +1,6 @@
 package com.zerobase.used_trade.service.impl;
 
+import static com.zerobase.used_trade.util.CountUtility.ADMIN_MAX_ACCOUNT;
 import static com.zerobase.used_trade.util.CountUtility.USER_MAX_ACCOUNT;
 
 import com.zerobase.used_trade.component.PageConverter;
@@ -40,9 +41,6 @@ public class AccountServiceImpl implements AccountService {
   public Principle enrollAccount(Long userId, EnrollRequest request) {
     //TODO TOKEN 생성 이후엔 CustomUserDetails 로 받을 예정이므로 굳이 불러올 필요 없음
     User user = this.userRepository.findById(userId).orElseThrow(NoUserException::new);
-    if (user.getRole() == UserRole.ADMIN) {
-      throw new NoAuthorizeException();
-    }
 
     //등록하려는 계좌번호가 은행의 계좌번호 숫자 수와 맞는지 확인
     Bank bank = Bank.valueOf(request.getBank());
@@ -55,7 +53,8 @@ public class AccountServiceImpl implements AccountService {
     if (userAccountCount == null || userAccountCount == 0L) {
       //기존 계좌에 등록된 계좌가 없는 경우: 반드시 대표 계좌로 지정
       request.setRepresentative(true);
-    } else if (userAccountCount >= USER_MAX_ACCOUNT) {
+    } else if ((user.getRole() == UserRole.ADMIN && userAccountCount >= ADMIN_MAX_ACCOUNT)
+        || (user.getRole() != UserRole.ADMIN && userAccountCount >= USER_MAX_ACCOUNT)) {
       throw new AlreadyMaxCountAccountException();
     } else if (request.isRepresentative()) {
       //기존 계좌에 등록된 계좌가 있고, 이번에 등록하려는 계좌를 대표 계좌로 등록하려는 경우
