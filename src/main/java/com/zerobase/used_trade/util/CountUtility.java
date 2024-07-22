@@ -2,6 +2,7 @@ package com.zerobase.used_trade.util;
 
 public class CountUtility {
   public final static int USER_MAX_ACCOUNT = 5;
+  public final static int ADMIN_MAX_ACCOUNT = 1;
   public final static int USER_MAX_ADDRESS = 5;
   public final static int ADMIN_MAX_ADDRESS = 1;
 
