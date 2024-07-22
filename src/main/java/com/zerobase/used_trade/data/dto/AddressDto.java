@@ -105,6 +105,7 @@ public class AddressDto {
 
   @Data
   @Builder
+  @AllArgsConstructor
   public static class AddressInfo {
     private String name;
     private String zipCode;

@@ -92,6 +92,7 @@ public class AccountDto {
 
   @Data
   @Builder
+  @AllArgsConstructor
   public static class AccountInfo{
     private String bank;
     private String accountNumber;
