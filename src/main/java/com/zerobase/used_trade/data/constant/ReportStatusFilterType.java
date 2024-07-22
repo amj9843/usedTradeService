@@ -3,8 +3,9 @@ package com.zerobase.used_trade.data.constant;
 import static java.lang.String.format;
 
 import com.zerobase.used_trade.data.constant.aware.DescriptionAware;
+import com.zerobase.used_trade.data.constant.aware.EnumFilterTypeAware;
 
-public enum ReportStatusFilterType implements DescriptionAware {
+public enum ReportStatusFilterType implements DescriptionAware, EnumFilterTypeAware<ReportStatus> {
   ALL("전체", null),
   NOTCOMPLETED("처리 전 결과 필터", ReportStatus.REGIST),
   COMPLETED("처리 후 필터", ReportStatus.COMPLETED);
@@ -17,13 +18,14 @@ public enum ReportStatusFilterType implements DescriptionAware {
     this.status = status;
   }
 
+  @Override
   public ReportStatus is() {
-    return status;
+    return this.status;
   }
 
   @Override
   public String description() {
-    return description;
+    return this.description;
   }
 
   @Override

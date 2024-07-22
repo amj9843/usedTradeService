@@ -2,7 +2,7 @@ package com.zerobase.used_trade.data.constant;
 
 import static java.lang.String.format;
 
-import com.zerobase.used_trade.data.comparator.DomainComparator.CreatedAsc;
+import com.zerobase.used_trade.data.comparator.DomainComparator.CreatedAtAsc;
 import com.zerobase.used_trade.data.comparator.DomainComparator.CreatedAtDesc;
 import com.zerobase.used_trade.data.comparator.DomainComparator.EndAtAsc;
 import com.zerobase.used_trade.data.comparator.DomainComparator.NameAsc;
@@ -14,7 +14,7 @@ import java.util.Comparator;
 public enum DomainSortType implements DescriptionAware, SortTypeAware<Domain> {
   NAMEASC("회사명 순", new NameAsc()),
   CREATEDATDESC("최근 등록순", new CreatedAtDesc()),
-  CREATEDATASC("등록순", new CreatedAsc()),
+  CREATEDATASC("등록순", new CreatedAtAsc()),
   ENDATASC("만료일순", new EndAtAsc());
 
   private final String description;

@@ -2,7 +2,7 @@ package com.zerobase.used_trade.data.constant;
 
 import static java.lang.String.format;
 
-import com.zerobase.used_trade.data.comparator.ReportComparator.CreatedAsc;
+import com.zerobase.used_trade.data.comparator.ReportComparator.CreatedAtAsc;
 import com.zerobase.used_trade.data.comparator.ReportComparator.CreatedAtDesc;
 import com.zerobase.used_trade.data.constant.aware.DescriptionAware;
 import com.zerobase.used_trade.data.constant.aware.SortTypeAware;
@@ -11,7 +11,7 @@ import java.util.Comparator;
 
 public enum ReportSortType implements DescriptionAware, SortTypeAware<SimpleInfoResponse> {
   CREATEDATDESC("최근 등록순", new CreatedAtDesc()),
-  CREATEDATASC("등록순", new CreatedAsc());
+  CREATEDATASC("등록순", new CreatedAtAsc());
 
   private final String description;
   private final Comparator<SimpleInfoResponse> comparator;

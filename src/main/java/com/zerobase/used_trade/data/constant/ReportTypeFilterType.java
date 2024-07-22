@@ -3,8 +3,9 @@ package com.zerobase.used_trade.data.constant;
 import static java.lang.String.format;
 
 import com.zerobase.used_trade.data.constant.aware.DescriptionAware;
+import com.zerobase.used_trade.data.constant.aware.EnumFilterTypeAware;
 
-public enum ReportTypeFilterType implements DescriptionAware {
+public enum ReportTypeFilterType implements DescriptionAware, EnumFilterTypeAware<ReportType> {
   ALL("전체", null),
   REPORT("건의사항 필터", ReportType.REPORT),
   SUGGEST("신고 내역 필터", ReportType.SUGGEST);
@@ -17,13 +18,14 @@ public enum ReportTypeFilterType implements DescriptionAware {
     this.type = type;
   }
 
+  @Override
   public ReportType is() {
-    return type;
+    return this.type;
   }
 
   @Override
   public String description() {
-    return description;
+    return this.description;
   }
 
   @Override

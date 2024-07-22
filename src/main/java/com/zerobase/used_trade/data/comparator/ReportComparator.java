@@ -12,7 +12,7 @@ public class ReportComparator {
     }
   }
 
-  public static class CreatedAsc implements Comparator<SimpleInfoResponse> {
+  public static class CreatedAtAsc implements Comparator<SimpleInfoResponse> {
     @Override
     public int compare(SimpleInfoResponse o1, SimpleInfoResponse o2) {
       return o1.getReportId().compareTo(o2.getReportId());

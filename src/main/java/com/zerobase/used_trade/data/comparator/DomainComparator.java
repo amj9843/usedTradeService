@@ -23,7 +23,7 @@ public class DomainComparator {
     }
   }
 
-  public static class CreatedAsc implements Comparator<Domain> {
+  public static class CreatedAtAsc implements Comparator<Domain> {
     @Override
     public int compare(Domain o1, Domain o2) {
       return o1.getId().compareTo(o2.getId());
