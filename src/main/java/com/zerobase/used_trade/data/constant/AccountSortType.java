@@ -21,7 +21,7 @@ public enum AccountSortType implements DescriptionAware, SortTypeAware<Account> 
 
   @Override
   public String description() {
-    return description;
+    return this.description;
   }
 
   @Override

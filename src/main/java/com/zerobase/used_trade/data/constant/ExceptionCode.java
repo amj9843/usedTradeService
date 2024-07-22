@@ -41,7 +41,16 @@ public enum ExceptionCode implements CodeAware {
   CANNOT_CHANGE_ROLE(HttpStatus.CONFLICT, "권한을 바꿀 수 있는 대상이 아닙니다."),
   NO_PRODUCT(HttpStatus.CONFLICT, "식별번호에 해당하는 상품이 없습니다."),
   NO_DEAL_METHOD(HttpStatus.CONFLICT, "식별번호에 해당하는 거래 방식이 없습니다."),
-  CANNOT_DELETE_DEAL_METHOD(HttpStatus.FORBIDDEN, "해당 거래 방식으로 신청중이거나 진행중인 거래가 있으면 거래 방식 삭제가 불가합니다.");
+  CANNOT_DELETE_DEAL_METHOD(HttpStatus.FORBIDDEN, "해당 거래 방식으로 신청중이거나 진행중인 거래가 있으면 거래 방식 삭제가 불가합니다."),
+  CANNOT_APPLY_DEAL_BEFORE_ENROLL_PHONE_NUMBER(HttpStatus.FORBIDDEN, "핸드폰 번호를 입력하지 않고, 등록된 핸드폰번호도 없는 유저는 거래를 신청할 수 없습니다."),
+  CANNOT_APPLY_DEAL(HttpStatus.FORBIDDEN, "본인이 등록하지 않고 담당하지도 않은 거래 가능한 상태인 상품만 거래를 신청할 수 있습니다."),
+  CANNOT_APPLY_DEAL_CAUSE_INSERT_EMPTY(HttpStatus.CONFLICT, "거래 등록에 필요한 입력값이 모두 채워지지 않았습니다."),
+  ALREADY_EXISTS_DEAL(HttpStatus.CONFLICT, "이미 해당 방식으로 거래를 신청한 내역이 있습니다."),
+  NO_DEAL(HttpStatus.CONFLICT, "식별번호에 해당하는 거래 내역이 없습니다."),
+  CANNOT_USE_CAUSE_DEAL_STATUS(HttpStatus.FORBIDDEN, "요청을 실행할 수 있는 거래 내역 상태가 아닙니다."),
+  CANNOT_USE_CAUSE_PRODUCT_STATUS(HttpStatus.FORBIDDEN, "요청을 실행할 수 있는 상품 상태가 아닙니다."),
+  INVALID_REQUEST(HttpStatus.BAD_REQUEST, "요청을 실행하는데 필요한 모든 값이 입력되지 않았습니다."),
+  INVALID_ACCOUNT_OWNER(HttpStatus.CONFLICT, "등록하려는 계좌 정보의 소유주가 등록 가능한 소유주가 아닙니다.");
 
   private final HttpStatus status;
   private final String message;

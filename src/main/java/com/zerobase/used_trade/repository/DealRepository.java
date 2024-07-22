@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DealRepository extends JpaRepository<Deal, Long>, CustomDealRepository {
-
+  boolean existsByIdAndBuyerId(Long dealId, Long userId);
 }

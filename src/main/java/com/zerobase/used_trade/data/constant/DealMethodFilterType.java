@@ -5,27 +5,28 @@ import static java.lang.String.format;
 import com.zerobase.used_trade.data.constant.aware.DescriptionAware;
 import com.zerobase.used_trade.data.constant.aware.EnumFilterTypeAware;
 
-public enum ReportStatusFilterType implements DescriptionAware, EnumFilterTypeAware<ReportStatus> {
+public enum DealMethodFilterType implements DescriptionAware, EnumFilterTypeAware<DealMethodType> {
   ALL("전체", null),
-  NOTCOMPLETED("처리 전 결과 필터", ReportStatus.REGIST),
-  COMPLETED("처리 후 필터", ReportStatus.COMPLETED);
+  MEETING("직거래 방식 필터", DealMethodType.MEETING),
+  PARCEL("택배 방식 필터", DealMethodType.PARCEL),
+  CONVENIENCE("반값 택배 방식 필터", DealMethodType.CONVENIENCE);
 
   final String description;
-  final ReportStatus status;
+  final DealMethodType status;
 
-  ReportStatusFilterType(String description, ReportStatus status) {
+  DealMethodFilterType(String description, DealMethodType status) {
     this.description = description;
     this.status = status;
   }
 
   @Override
-  public ReportStatus is() {
+  public DealMethodType is() {
     return this.status;
   }
 
   @Override
   public String description() {
-    return this.description;
+    return description;
   }
 
   @Override

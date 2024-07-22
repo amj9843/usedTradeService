@@ -118,6 +118,15 @@ public class DealMethodDto {
           .dateTime(dealMethod.getDateTime())
           .build();
     }
+
+    public static MeetingMethod fromEntity(Principle dealMethod) {
+      return MeetingMethod.builder()
+          .id(dealMethod.getId())
+          .additionalPrice(dealMethod.getAdditionalPrice())
+          .location(dealMethod.getLocation())
+          .dateTime(dealMethod.getDateTime())
+          .build();
+    }
   }
 
   @Data

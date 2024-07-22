@@ -1,5 +1,6 @@
 package com.zerobase.used_trade.repository.custom.impl;
 
+import static com.zerobase.used_trade.util.GroupStatusUtility.CAN_APPLY_DEAL_PRODUCT_STATUS;
 import static com.zerobase.used_trade.util.ScoreUtility.BASIC_REVIEW_SCORE;
 import static com.zerobase.used_trade.util.ScoreUtility.BASIC_SCORE;
 import static com.zerobase.used_trade.util.ScoreUtility.HIGHEST_SCORE;
@@ -7,13 +8,19 @@ import static com.zerobase.used_trade.util.ScoreUtility.LOWEST_SCORE;
 
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.zerobase.used_trade.data.domain.QConsignment;
+import com.zerobase.used_trade.data.domain.QDeal;
+import com.zerobase.used_trade.data.domain.QDealMethod;
 import com.zerobase.used_trade.data.domain.QDomain;
+import com.zerobase.used_trade.data.domain.QProduct;
 import com.zerobase.used_trade.data.domain.QReview;
 import com.zerobase.used_trade.data.domain.QUser;
+import com.zerobase.used_trade.data.domain.User;
 import com.zerobase.used_trade.data.dto.QUserDto_Employee;
 import com.zerobase.used_trade.data.dto.UserDto.Employee;
 import com.zerobase.used_trade.repository.custom.CustomUserRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +31,10 @@ public class CustomUserRepositoryImpl implements CustomUserRepository {
   private final QUser user = QUser.user;
   private final QDomain domain = QDomain.domain;
   private final QReview review = QReview.review;
+  private final QDeal deal = QDeal.deal;
+  private final QDealMethod dealMethod = QDealMethod.dealMethod;
+  private final QProduct product = QProduct.product;
+  private final QConsignment consignment = QConsignment.consignment;
 
   @Override
   public List<Employee> findEmployeeByDomainId(Long domainId) {
@@ -55,5 +66,43 @@ public class CustomUserRepositoryImpl implements CustomUserRepository {
         .leftJoin(review).on(review.dealerId.eq(user.id))
         .groupBy(user.id)
         .fetch();
+  }
+
+  @Override
+  public Optional<User> findDealerByDealId(Long dealId) {
+    Long dealerId = jpaQueryFactory
+        .select(product.sellerId)
+        .from(product)
+        .leftJoin(dealMethod).on(dealMethod.productId.eq(product.id))
+        .leftJoin(deal).on(deal.detailId.eq(dealMethod.id))
+        .where(
+            deal.id.eq(dealId),
+            product.status.in(CAN_APPLY_DEAL_PRODUCT_STATUS),
+            product.consignment.isFalse()
+        )
+        .fetchFirst();
+
+    if (dealerId == null) {
+      dealerId = jpaQueryFactory
+          .select(consignment.adminId)
+          .from(consignment)
+          .leftJoin(product).on(product.id.eq(consignment.productId))
+          .leftJoin(dealMethod).on(dealMethod.productId.eq(product.id))
+          .leftJoin(deal).on(deal.detailId.eq(dealMethod.id))
+          .where(
+              deal.id.eq(dealId),
+              product.status.in(CAN_APPLY_DEAL_PRODUCT_STATUS),
+              product.consignment.isTrue()
+          )
+          .fetchFirst();
+    }
+
+    return Optional.ofNullable(jpaQueryFactory
+        .select(user)
+        .from(user)
+        .where(
+            user.id.eq(dealerId)
+        )
+        .fetchFirst());
   }
 }
